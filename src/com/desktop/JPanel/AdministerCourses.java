@@ -24,13 +24,21 @@ public class AdministerCourses extends JPanel {
 		
 		JList listCourses = new JList();
 		
-		JLabel lblListCategories = new JLabel("Cursos\r\n");
+		JLabel lblListCategories = new JLabel("Categorias del curso seleccionado");
 		
-		JList listCourses_1 = new JList();
+		JList listCategories = new JList();
 		
-		JList listCourses_1_1 = new JList();
+		JList listLevels = new JList();
 		
-		JLabel lblListCourses_1_1 = new JLabel("Cursos\r\n");
+		JLabel lblListLevels = new JLabel("Niveles de categor\u00EDa seleccionada");
+		
+		JButton btnAddCategory = new JButton("A\u00F1adir categoria");
+		
+		JButton btnAddLevel = new JButton("A\u00F1adir nivel");
+		
+		JButton btnAddExercice = new JButton("A\u00D1ADIR PREGUNTA");
+		
+		JButton btnShowExercice = new JButton("VISUALIZAR PREGUNTAS");
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -39,18 +47,27 @@ public class AdministerCourses extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(courseSelectorPanel, GroupLayout.PREFERRED_SIZE, 689, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblCursSelectorTitle)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblListCourses)
-							.addGap(191)
-							.addComponent(lblListCategories, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-							.addGap(191)
-							.addComponent(lblListCourses_1_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(listCourses, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
-							.addGap(43)
-							.addComponent(listCourses_1, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
-							.addGap(43)
-							.addComponent(listCourses_1_1, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+							.addComponent(btnAddExercice, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+									.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+										.addComponent(lblListCourses)
+										.addGap(191)
+										.addComponent(lblListCategories, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+										.addComponent(listCourses, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
+										.addGap(43)
+										.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+											.addComponent(btnAddCategory, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(listCategories, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))))
+								.addGap(43)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+									.addComponent(btnAddLevel, GroupLayout.PREFERRED_SIZE, 181, GroupLayout.PREFERRED_SIZE)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(lblListLevels, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(listLevels, GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)))))
+						.addComponent(btnShowExercice, GroupLayout.PREFERRED_SIZE, 629, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(14, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
@@ -64,13 +81,21 @@ public class AdministerCourses extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblListCourses)
 						.addComponent(lblListCategories)
-						.addComponent(lblListCourses_1_1))
+						.addComponent(lblListLevels))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(listCourses_1, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
-						.addComponent(listCourses_1_1, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+						.addComponent(listCategories, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+						.addComponent(listLevels, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
 						.addComponent(listCourses, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(137, Short.MAX_VALUE))
+					.addGap(18)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnAddCategory)
+						.addComponent(btnAddLevel))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnAddExercice)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnShowExercice)
+					.addContainerGap(33, Short.MAX_VALUE))
 		);
 		
 		JLabel lblOriginLanguage = new JLabel("Idioma de origen");
