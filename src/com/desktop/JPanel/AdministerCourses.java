@@ -1,30 +1,29 @@
 package com.desktop.JPanel;
 
 import javax.swing.JPanel;
+import java.awt.BorderLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import java.util.List;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import com.duolingo.interfaces.ILanguage;
 import com.duolingo.interfaces.impl.LanguageImpl;
+import com.duolingo.model.Course;
 import com.duolingo.model.Language;
-
 import javax.swing.JButton;
 import javax.swing.JList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.DefaultComboBoxModel;
 
-public class AdministerCourses extends JFrame {
-public static void main(String[] args) {
-	new AdministerCourses();
-}
+public class AdministerCourses extends JPanel {
+
 	public AdministerCourses() {
 		
-		setVisible(true);
-		
 		ILanguage languageManager = new LanguageImpl();
-		List<Language> language = languageManager.getAllLanguages();		
+		List<Language> languages = languageManager.getAllLanguages();	
 		
 		JPanel courseSelectorPanel = new JPanel();
 		
@@ -111,16 +110,41 @@ public static void main(String[] args) {
 		JLabel lblOriginLanguage = new JLabel("Idioma de origen");
 		
 		JComboBox comboBoxOriginLanguage = new JComboBox();
+		comboBoxOriginLanguage.setModel(new DefaultComboBoxModel(new String[] {"Selecciona Idioma"}));
 		
-		for (Language l : language) {
+		for (Language l : languages) {
 			comboBoxOriginLanguage.addItem(l.getName());
 		}
-			
-		JLabel lblDestinationLanguage = new JLabel("Idioma de destino");
+		
+		JLabel lblDestinationLanguage = new JLabel("Idioma de destino");		
 		
 		JComboBox comboBoxDestinationLanguage = new JComboBox();
+		comboBoxDestinationLanguage.setModel(new DefaultComboBoxModel(new String[] {"Selecciona Idioma"}));
+		
+		for (Language l : languages) {
+			comboBoxDestinationLanguage.addItem(l.getName());
+		}
 		
 		JButton btnApplyFilter = new JButton("Aplicar filtro");
+		btnApplyFilter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Language languageOrigin;
+				Language languageDestination;
+				
+				for(Language l : languages) {
+					if(l.getId() == comboBoxOriginLanguage.getSelectedIndex()+1) {
+						languageOrigin = l;
+					}					
+				}
+				for(Language l : languages) {
+					if(l.getId() == comboBoxDestinationLanguage.getSelectedIndex()+1) {
+						languageDestination = l;
+					}					
+				}
+									
+			}
+		});
 		
 		JButton btnCreateCourse = new JButton("Crear curso");
 		GroupLayout gl_courseSelectorPanel = new GroupLayout(courseSelectorPanel);

@@ -6,6 +6,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.naming.RefAddr;
@@ -19,6 +21,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import java.awt.event.MouseAdapter;
 
 public class MainFrame extends JFrame {
 
@@ -57,6 +60,7 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		
 		JPanel panel = new JPanel();
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -83,7 +87,16 @@ public class MainFrame extends JFrame {
 		);
 		panel.setLayout(gl_panel);
 		
-		JMenu adminCourses = new JMenu("Administrar Cursos");
+		JMenu adminCourses = new JMenu("Administrar Cursos");		
+		adminCourses.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				AdministerCourses administerCourses = new AdministerCourses();
+				administerCourses.setSize(getPreferredSize());
+				administerCourses.setVisible(true);
+				setContentPane(administerCourses);
+			}
+		});
 		menu.add(adminCourses);
 		
 		JMenu adminUsers = new JMenu("Administrar Usuarios");
