@@ -15,6 +15,8 @@ import com.duolingo.model.Language;
 import javax.swing.JButton;
 import javax.swing.JList;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -32,13 +34,27 @@ public class AdministerCourses extends JPanel {
 		
 		JLabel lblListCourses = new JLabel("Cursos\r\n");
 		
+		DefaultListModel<String> dlmCategories = new DefaultListModel<>();
+		JList<String> listCategories = new JList<>(dlmCategories);
+		
 		DefaultListModel<String> dlmCourses = new DefaultListModel<>();
-		JList<String> listCourses = new JList<>(dlmCourses);
+		dlmCourses.addElement("Patatas");
+		dlmCourses.addElement("Tomates");
+		dlmCourses.addElement("Cochecitos");
+		dlmCourses.addElement("Gato");
+		
+		JList<String> listCourses = new JList<>(dlmCourses);		
+		listCourses.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				if (me.getClickCount() == 1) {
+					dlmCategories.removeAllElements();
+					dlmCategories.addElement(listCourses.getSelectedValue());
+				}
+			}
+		});
 		
 		JLabel lblListCategories = new JLabel("Categorias del curso seleccionado");
 
-		DefaultListModel<String> dlmCategories = new DefaultListModel<>();
-		JList<String> listCategories = new JList<>(dlmCategories);
 		
 		JList listLevels = new JList();
 		
@@ -227,8 +243,10 @@ public class AdministerCourses extends JPanel {
             btnCreateCourse.setEnabled(true);
             btnCreateCourse.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
+                	
                     // Crea CURS con IDIOMA DESTÍ + IDIOMA ORIGEN
-                    dlmCourses.addElement("Aqui va el curso");
+                	dlmCourses.removeAllElements();
+                    dlmCourses.addElement("CURSO AÑADIDO");
                     btnCreateCourse.setEnabled(false);
                 }
             });
