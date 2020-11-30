@@ -8,12 +8,16 @@ import javax.swing.JLabel;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
 import com.duolingo.interfaces.ILanguage;
 import com.duolingo.interfaces.impl.LanguageImpl;
+import com.duolingo.model.Category;
 import com.duolingo.model.Course;
 import com.duolingo.model.Language;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,7 +27,7 @@ import javax.swing.DefaultListModel;
 
 public class AdministerCourses extends JPanel {
 
-	public AdministerCourses() {
+	public AdministerCourses() {		
 		
 		ILanguage languageManager = new LanguageImpl();
 		List<Language> languages = languageManager.getAllLanguages();	
@@ -61,6 +65,30 @@ public class AdministerCourses extends JPanel {
 		JLabel lblListLevels = new JLabel("Niveles de categor\u00EDa seleccionada");
 		
 		JButton btnAddCategory = new JButton("A\u00F1adir categoria");
+		btnAddCategory.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				if(listCourses.getSelectedValue() != null) {
+                    String nameCategory = JOptionPane.showInputDialog("Nombre de la categoria:");
+                    Boolean estadentro = false;
+                    
+                    for (int i=0; i<dlmCategories.size();i++) {
+                    	if(dlmCategories.get(i).equals(nameCategory)) {
+                    		
+                    		estadentro = true;
+                    	}
+                    }
+                    if(estadentro==true) {
+                    	JOptionPane.showMessageDialog(null, "La categoria " + nameCategory + " no ha sido añadida, ya existe.");
+                    } else {
+                    	dlmCategories.addElement(nameCategory);
+                    	JOptionPane.showMessageDialog(null, "La categoria " + nameCategory + " sido añadida");
+                    } 
+                }
+				
+			}
+		});
 		
 		JButton btnAddLevel = new JButton("A\u00F1adir nivel");
 		
