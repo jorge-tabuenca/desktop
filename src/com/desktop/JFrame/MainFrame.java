@@ -19,11 +19,13 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
-
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -35,7 +37,8 @@ public class MainFrame extends JFrame {
 					URL url = new URL("https://i.imgur.com/5kwCNbM.png%22");
 				    image = ImageIO.read(url);
 				    frame.setMinimumSize(screenSize);
-				    frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+				    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				    frame.getContentPane().setPreferredSize(screenSize);
 				    frame.setIconImage(image);
 				    frame.setResizable(false);
 				} catch (Exception e) {
@@ -58,46 +61,68 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		
 		JPanel panel = new JPanel();
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(263)
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGap(583))
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 2128, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(74)
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGap(426))
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 995, Short.MAX_VALUE)
+					.addGap(0))
 		);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 10, Short.MAX_VALUE)
+				.addGap(0, 1271, Short.MAX_VALUE)
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 10, Short.MAX_VALUE)
+				.addGap(0, 726, Short.MAX_VALUE)
 		);
 		panel.setLayout(gl_panel);
 		
 		JMenu adminCourses = new JMenu("Administrar Cursos");
-		menu.add(adminCourses);
-		
-		JMenu adminUsers = new JMenu("Administrar Usuarios");
-		
-		adminCourses.addActionListener(new ActionListener() {
-			
+		adminCourses.addMouseListener(new MouseAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void mouseClicked(MouseEvent e) {
 				
 				AdministerCourses administerCourses = new AdministerCourses();
 				
-				contentPane.add(adminCourses);
-				adminCourses.setVisible(true);
+				administerCourses.setSize(panel.getSize());
+				
+				panel.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+				
+				panel.removeAll();
+				panel.add(administerCourses);
+				
+				//pack();
+				
+				panel.setVisible(true);
+				
+				
+				//getContentPane().setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+				
+				invalidate();
+				validate();
+				
+			}
+		});
+		menu.add(adminCourses);
+		
+		JMenu adminUsers = new JMenu("Administrar Usuarios");
+		adminUsers.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				panel.removeAll();
+				invalidate();
+				validate();
+				
 				
 			}
 		});
