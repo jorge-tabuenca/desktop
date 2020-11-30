@@ -53,8 +53,7 @@ public class MainFrame extends JFrame {
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
 		JMenuBar menu = new JMenuBar();
-		setJMenuBar(menu);
-		
+		setJMenuBar(menu);	
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -126,7 +125,7 @@ public class MainFrame extends JFrame {
 				
 			}
 		});
-		
+				
 		menu.add(adminUsers);
 		
 		contentPane.setLayout(gl_contentPane);
