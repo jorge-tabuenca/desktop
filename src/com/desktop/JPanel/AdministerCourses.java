@@ -1,20 +1,30 @@
 package com.desktop.JPanel;
 
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
-import java.awt.Choice;
+import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import com.duolingo.interfaces.ILanguage;
+import com.duolingo.interfaces.impl.LanguageImpl;
+import com.duolingo.model.Language;
+
 import javax.swing.JButton;
-import javax.swing.JScrollPane;
 import javax.swing.JList;
 
-public class AdministerCourses extends JPanel {
-
+public class AdministerCourses extends JFrame {
+public static void main(String[] args) {
+	new AdministerCourses();
+}
 	public AdministerCourses() {
+		
+		setVisible(true);
+		
+		ILanguage languageManager = new LanguageImpl();
+		List<Language> language = languageManager.getAllLanguages();		
 		
 		JPanel courseSelectorPanel = new JPanel();
 		
@@ -102,6 +112,10 @@ public class AdministerCourses extends JPanel {
 		
 		JComboBox comboBoxOriginLanguage = new JComboBox();
 		
+		for (Language l : language) {
+			comboBoxOriginLanguage.addItem(l.getName());
+		}
+			
 		JLabel lblDestinationLanguage = new JLabel("Idioma de destino");
 		
 		JComboBox comboBoxDestinationLanguage = new JComboBox();

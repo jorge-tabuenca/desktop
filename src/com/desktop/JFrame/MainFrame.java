@@ -50,8 +50,7 @@ public class MainFrame extends JFrame {
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
 		JMenuBar menu = new JMenuBar();
-		setJMenuBar(menu);
-		
+		setJMenuBar(menu);	
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -88,19 +87,6 @@ public class MainFrame extends JFrame {
 		menu.add(adminCourses);
 		
 		JMenu adminUsers = new JMenu("Administrar Usuarios");
-		
-		adminCourses.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				AdministerCourses administerCourses = new AdministerCourses();
-				
-				contentPane.add(adminCourses);
-				adminCourses.setVisible(true);
-				
-			}
-		});
 		
 		menu.add(adminUsers);
 		
