@@ -17,6 +17,7 @@ import javax.swing.JList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 
 public class AdministerCourses extends JPanel {
 
@@ -31,11 +32,13 @@ public class AdministerCourses extends JPanel {
 		
 		JLabel lblListCourses = new JLabel("Cursos\r\n");
 		
-		JList listCourses = new JList();
+		DefaultListModel<String> dlmCourses = new DefaultListModel<>();
+		JList<String> listCourses = new JList<>(dlmCourses);
 		
 		JLabel lblListCategories = new JLabel("Categorias del curso seleccionado");
-		
-		JList listCategories = new JList();
+
+		DefaultListModel<String> dlmCategories = new DefaultListModel<>();
+		JList<String> listCategories = new JList<>(dlmCategories);
 		
 		JList listLevels = new JList();
 		
@@ -134,12 +137,18 @@ public class AdministerCourses extends JPanel {
 			comboBoxDestinationLanguage.addItem(l.getName());
 		}
 		
+		JButton btnCreateCourse = new JButton("Crear curso");
+		btnCreateCourse.setEnabled(false);
+		
 		JButton btnApplyFilter = new JButton("Aplicar filtro");
 		btnApplyFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				Language languageOrigin = new Language();
 				Language languageDestination = new Language();
+				
+				// Borra todos los cursos que hayan en la lista al efectuar el fitro.
+				dlmCourses.removeAllElements();
 				
 				for(Language l : languages) {
 					if(l.getId() == comboBoxOriginLanguage.getSelectedIndex()+1) {
@@ -151,15 +160,22 @@ public class AdministerCourses extends JPanel {
 						languageDestination = l;
 					}					
 				}
+				
+				// Añadira todos los cursos que coincidan con el fitro establecido
+				
 				/*for(Course course : languageOrigin.getCourses()) {
 					if(languageOrigin.getName().equals(languageDestination.getName())) {
 						listCourses.add(course.getName());
 					}
-				}*/									
+				}*/	
+				
+				// Una vez añadidos todos los cursos se ejecutará esta función, si al final no se
+				// ha añadido ningun curso esta habilitará el botón bnCreateCourse.
+				// Dentro de ella se encargará de añadir el curso a la JList y a la BBDD
+				checkCourses(dlmCourses, btnCreateCourse);
 			}
 		});
 		
-		JButton btnCreateCourse = new JButton("Crear curso");
 		GroupLayout gl_courseSelectorPanel = new GroupLayout(courseSelectorPanel);
 		gl_courseSelectorPanel.setHorizontalGroup(
 				gl_courseSelectorPanel.createParallelGroup(Alignment.LEADING)
@@ -205,4 +221,18 @@ public class AdministerCourses extends JPanel {
 		setLayout(groupLayout);
 
 	}
+	
+	public void checkCourses(DefaultListModel<String> dlmCourses, JButton btnCreateCourse) {
+        if (dlmCourses.getSize() == 0) {
+            btnCreateCourse.setEnabled(true);
+            btnCreateCourse.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // Crea CURS con IDIOMA DESTÍ + IDIOMA ORIGEN
+                    dlmCourses.addElement("Aqui va el curso");
+                    btnCreateCourse.setEnabled(false);
+                }
+            });
+        }
+
+    }
 }
