@@ -9,7 +9,11 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import com.duolingo.interfaces.ICategory;
+import com.duolingo.interfaces.ICourse;
 import com.duolingo.interfaces.ILanguage;
+import com.duolingo.interfaces.impl.CategoryImpl;
+import com.duolingo.interfaces.impl.CourseImpl;
 import com.duolingo.interfaces.impl.LanguageImpl;
 import com.duolingo.model.Category;
 import com.duolingo.model.Course;
@@ -27,74 +31,56 @@ import javax.swing.DefaultListModel;
 
 public class AdministerCourses extends JPanel {
 
+	DefaultListModel<String> dlmCategories, dlmCourses;
+	JList<String> listCategories, listCourses;
+	JButton btnCreateCourse = new JButton();
+	
 	public AdministerCourses() {		
 		
 		ILanguage languageManager = new LanguageImpl();
-		List<Language> languages = languageManager.getAllLanguages();	
+		List<Language> languages = languageManager.getAllLanguages();			
 		
 		JPanel courseSelectorPanel = new JPanel();
-		
+			
 		JLabel lblCursSelectorTitle = new JLabel("Cursos existentes (filtrar por origen y/o destino)");
-		
+		JLabel lblListCategories = new JLabel("Categorias del curso seleccionado");
+		JLabel lblListLevels = new JLabel("Niveles de categor\u00EDa seleccionada");
 		JLabel lblListCourses = new JLabel("Cursos\r\n");
 		
-		DefaultListModel<String> dlmCategories = new DefaultListModel<>();
-		JList<String> listCategories = new JList<>(dlmCategories);
 		
-		DefaultListModel<String> dlmCourses = new DefaultListModel<>();
-		dlmCourses.addElement("Patatas");
-		dlmCourses.addElement("Tomates");
-		dlmCourses.addElement("Cochecitos");
-		dlmCourses.addElement("Gato");
+		dlmCategories = new DefaultListModel<>();
+		listCategories = new JList<>(dlmCategories);
 		
-		JList<String> listCourses = new JList<>(dlmCourses);		
+		dlmCourses = new DefaultListModel<>();
+		listCourses = new JList<>(dlmCourses);		
 		listCourses.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() == 1) {
 					dlmCategories.removeAllElements();
-					dlmCategories.addElement(listCourses.getSelectedValue());
+					String courseName = listCourses.getSelectedValue();
+					checkCategories(courseName);
+					
 				}
 			}
 		});
 		
-		JLabel lblListCategories = new JLabel("Categorias del curso seleccionado");
-
-		
 		JList listLevels = new JList();
 		
-		JLabel lblListLevels = new JLabel("Niveles de categor\u00EDa seleccionada");
 		
 		JButton btnAddCategory = new JButton("A\u00F1adir categoria");
-		btnAddCategory.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				if(listCourses.getSelectedValue() != null) {
-                    String nameCategory = JOptionPane.showInputDialog("Nombre de la categoria:");
-                    Boolean estadentro = false;
-                    
-                    for (int i=0; i<dlmCategories.size();i++) {
-                    	if(dlmCategories.get(i).equals(nameCategory)) {
-                    		
-                    		estadentro = true;
-                    	}
-                    }
-                    if(estadentro==true) {
-                    	JOptionPane.showMessageDialog(null, "La categoria " + nameCategory + " no ha sido añadida, ya existe.");
-                    } else {
-                    	dlmCategories.addElement(nameCategory);
-                    	JOptionPane.showMessageDialog(null, "La categoria " + nameCategory + " sido añadida");
-                    } 
-                }
+		btnAddCategory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addCategory();
 				
 			}
 		});
 		
-		JButton btnAddLevel = new JButton("A\u00F1adir nivel");
-		
-		JButton btnAddExercice = new JButton("A\u00D1ADIR PREGUNTA");
-		
+		JButton btnAddLevel = new JButton("A\u00F1adir nivel");		
+		JButton btnAddExercice = new JButton("A\u00D1ADIR PREGUNTA");		
 		JButton btnShowExercice = new JButton("VISUALIZAR PREGUNTAS");
+		
+		
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 				groupLayout.createParallelGroup(Alignment.LEADING)
@@ -168,57 +154,46 @@ public class AdministerCourses extends JPanel {
 		JComboBox comboBoxOriginLanguage = new JComboBox();
 		comboBoxOriginLanguage.setModel(new DefaultComboBoxModel(new String[] {"Selecciona Idioma"}));
 		
+		// Añade todos los idiomas disponibles en la BBDD al JComboBox
 		for (Language l : languages) {
 			comboBoxOriginLanguage.addItem(l.getName());
 		}
 		
-		JLabel lblDestinationLanguage = new JLabel("Idioma de destino");		
 		
+		JLabel lblDestinationLanguage = new JLabel("Idioma de destino");		
 		JComboBox comboBoxDestinationLanguage = new JComboBox();
 		comboBoxDestinationLanguage.setModel(new DefaultComboBoxModel(new String[] {"Selecciona Idioma"}));
 		
+		// Añade todos los idiomas disponibles en la BBDD al JComboBox
 		for (Language l : languages) {
 			comboBoxDestinationLanguage.addItem(l.getName());
 		}
 		
-		JButton btnCreateCourse = new JButton("Crear curso");
+		btnCreateCourse.setText("Crear curso");
 		btnCreateCourse.setEnabled(false);
+		btnCreateCourse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String originLang = comboBoxOriginLanguage.getSelectedItem().toString();
+				String destLang = comboBoxDestinationLanguage.getSelectedItem().toString();
+				
+				addCourse(originLang, destLang);
+			}
+		});
+		
 		
 		JButton btnApplyFilter = new JButton("Aplicar filtro");
 		btnApplyFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Language languageOrigin = new Language();
-				Language languageDestination = new Language();
-				
-				// Borra todos los cursos que hayan en la lista al efectuar el fitro.
-				dlmCourses.removeAllElements();
-				
-				for(Language l : languages) {
-					if(l.getId() == comboBoxOriginLanguage.getSelectedIndex()+1) {
-						languageOrigin = l;
-					}					
-				}
-				for(Language l : languages) {
-					if(l.getId() == comboBoxDestinationLanguage.getSelectedIndex()+1) {
-						languageDestination = l;
-					}					
-				}
-				
-				// Añadira todos los cursos que coincidan con el fitro establecido
-				
-				/*for(Course course : languageOrigin.getCourses()) {
-					if(languageOrigin.getName().equals(languageDestination.getName())) {
-						listCourses.add(course.getName());
-					}
-				}*/	
-				
-				// Una vez añadidos todos los cursos se ejecutará esta función, si al final no se
-				// ha añadido ningun curso esta habilitará el botón bnCreateCourse.
-				// Dentro de ella se encargará de añadir el curso a la JList y a la BBDD
-				checkCourses(dlmCourses, btnCreateCourse);
+				String originLang = comboBoxOriginLanguage.getSelectedItem().toString();
+				String destLang = comboBoxDestinationLanguage.getSelectedItem().toString();
+												
+				dlmCourses.removeAllElements();				
+				checkCourses(originLang, destLang);
 			}
 		});
+		
 		
 		GroupLayout gl_courseSelectorPanel = new GroupLayout(courseSelectorPanel);
 		gl_courseSelectorPanel.setHorizontalGroup(
@@ -266,19 +241,81 @@ public class AdministerCourses extends JPanel {
 
 	}
 	
-	public void checkCourses(DefaultListModel<String> dlmCourses, JButton btnCreateCourse) {
-        if (dlmCourses.getSize() == 0) {
+	
+	private void checkCourses(String originLang, String destLang) {
+		
+		// checkCourses - Filtro CURSOS
+		// QUERY donde filtra todos los CURSOS que cumplan con los 2 IDIOMAS
+		// seleccionados en las JComboBox.
+		// Añade el nombre del CURSO a la JList de CURSOS.
+		
+		ICourse courseManager = new CourseImpl();
+		List<Course> courses = courseManager.getAllCourses(originLang, destLang);
+		for (Course c : courses) {
+            dlmCourses.addElement("CURSO - ["+originLang+" - "+destLang+"]");
+		}		
+
+		if (dlmCourses.getSize() == 0) {
             btnCreateCourse.setEnabled(true);
-            btnCreateCourse.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                	
-                    // Crea CURS con IDIOMA DESTÍ + IDIOMA ORIGEN
-                	dlmCourses.removeAllElements();
-                    dlmCourses.addElement("CURSO AÑADIDO");
-                    btnCreateCourse.setEnabled(false);
-                }
-            });
         }
 
     }
+	
+	private void addCourse(String originLang, String destLang) {
+		
+		// addCourse
+		// Al pulsar btnCreateCourse se activa este método que añade
+		// a la JList un ITEM haciendo referencia a los 2 idiomas
+		// seleccionados en las JComboBox
+		
+		dlmCourses.removeAllElements();
+		dlmCourses.addElement("CURSO - [" + originLang + " - " + destLang + "]");
+		btnCreateCourse.setEnabled(false);
+		
+	}
+	
+	private void checkCategories(String courseName) {
+		
+		// checkCategories
+		// Al seleccionar un CURSO, mostrará todas sus CATEGORÍAS aplicando
+		// una QUERY que filtrará los resultados.
+		
+		ICategory categoryManager = new CategoryImpl();
+		List<Category> categories = categoryManager.getAllCategories(courseName);
+		
+		dlmCategories.addElement(courseName); 		// MockUP -- El de abajo es el que funciona con la QUERY
+		
+		for (Category c : categories) {
+			dlmCategories.addElement(c.getName()); 	// Nombre de CATEGORIA
+			
+		}
+		
+	}
+	
+	private void addCategory() {
+		
+		// addCategory
+		// Si hay un CURSO seleccionado, al presionar el JButton btnAddCategory
+		// mostrará un JOptionPane preguntando al usuario el nombre de la categoria
+		// que quiere añadir. En caso de ser nueva e unica, esta se añade, si se repite
+		// aborta y no la añade a la JList.
+		
+		if(listCourses.getSelectedValue() != null) {          
+			String nameCategory = JOptionPane.showInputDialog("Nombre de la categoria:");
+            Boolean isRepeated = false;
+            
+            for (int i=0; i<dlmCategories.size();i++) {
+            	if(dlmCategories.get(i).toLowerCase().equals(nameCategory.toLowerCase())) {
+            		
+            		isRepeated = true;
+            	}
+            }
+            if(isRepeated) {
+            	JOptionPane.showMessageDialog(null, "La categoria " + nameCategory + " no ha sido añadida, ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+            	dlmCategories.addElement(nameCategory);
+            	JOptionPane.showMessageDialog(null, "La categoria " + nameCategory + " sido añadida");
+            } 
+        }
+	}
 }

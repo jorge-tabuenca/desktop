@@ -32,7 +32,6 @@ public class MainFrame extends JFrame {
 				try {					
 					MainFrame frame = new MainFrame();
 					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-					frame.setVisible(true);
 					Image image;
 					URL url = new URL("https://i.imgur.com/5kwCNbM.png%22");
 				    image = ImageIO.read(url);
@@ -41,6 +40,7 @@ public class MainFrame extends JFrame {
 				    frame.getContentPane().setPreferredSize(screenSize);
 				    frame.setIconImage(image);
 				    frame.setResizable(false);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
