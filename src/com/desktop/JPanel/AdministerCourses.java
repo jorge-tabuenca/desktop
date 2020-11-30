@@ -129,8 +129,8 @@ public class AdministerCourses extends JPanel {
 		btnApplyFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Language languageOrigin;
-				Language languageDestination;
+				Language languageOrigin = new Language();
+				Language languageDestination = new Language();
 				
 				for(Language l : languages) {
 					if(l.getId() == comboBoxOriginLanguage.getSelectedIndex()+1) {
@@ -142,7 +142,11 @@ public class AdministerCourses extends JPanel {
 						languageDestination = l;
 					}					
 				}
-									
+				/*for(Course course : languageOrigin.getCourses()) {
+					if(languageOrigin.getName().equals(languageDestination.getName())) {
+						listCourses.add(course.getName());
+					}
+				}*/									
 			}
 		});
 		
