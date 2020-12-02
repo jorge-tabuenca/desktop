@@ -8,20 +8,20 @@ import javax.swing.JLabel;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
-
 import com.duolingo.interfaces.ICategory;
-import com.duolingo.interfaces.ICourse;
 import com.duolingo.interfaces.ILanguage;
+import com.duolingo.interfaces.ILanguageCourse;
 import com.duolingo.interfaces.impl.CategoryImpl;
-import com.duolingo.interfaces.impl.CourseImpl;
+import com.duolingo.interfaces.impl.LanguageCourseImpl;
 import com.duolingo.interfaces.impl.LanguageImpl;
 import com.duolingo.model.Category;
 import com.duolingo.model.Course;
 import com.duolingo.model.Language;
+import com.duolingo.model.LanguageCourse;
+
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -33,6 +33,7 @@ public class AdministerCourses extends JPanel {
 
 	DefaultListModel<String> dlmCategories, dlmCourses;
 	JList<String> listCategories, listCourses;
+	JComboBox comboBoxOriginLanguage, comboBoxDestinationLanguage;
 	JButton btnCreateCourse = new JButton();
 	
 	public AdministerCourses() {		
@@ -151,7 +152,7 @@ public class AdministerCourses extends JPanel {
 		
 		JLabel lblOriginLanguage = new JLabel("Idioma de origen");
 		
-		JComboBox comboBoxOriginLanguage = new JComboBox();
+		comboBoxOriginLanguage = new JComboBox();
 		comboBoxOriginLanguage.setModel(new DefaultComboBoxModel(new String[] {"Selecciona Idioma"}));
 		
 		// Añade todos los idiomas disponibles en la BBDD al JComboBox
@@ -161,7 +162,7 @@ public class AdministerCourses extends JPanel {
 		
 		
 		JLabel lblDestinationLanguage = new JLabel("Idioma de destino");		
-		JComboBox comboBoxDestinationLanguage = new JComboBox();
+		comboBoxDestinationLanguage = new JComboBox();
 		comboBoxDestinationLanguage.setModel(new DefaultComboBoxModel(new String[] {"Selecciona Idioma"}));
 		
 		// Añade todos los idiomas disponibles en la BBDD al JComboBox
@@ -174,8 +175,8 @@ public class AdministerCourses extends JPanel {
 		btnCreateCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String originLang = comboBoxOriginLanguage.getSelectedItem().toString();
-				String destLang = comboBoxDestinationLanguage.getSelectedItem().toString();
+				int originLang = comboBoxOriginLanguage.getSelectedIndex();
+				int destLang = comboBoxDestinationLanguage.getSelectedIndex();
 				
 				addCourse(originLang, destLang);
 			}
@@ -186,8 +187,8 @@ public class AdministerCourses extends JPanel {
 		btnApplyFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String originLang = comboBoxOriginLanguage.getSelectedItem().toString();
-				String destLang = comboBoxDestinationLanguage.getSelectedItem().toString();
+				int originLang = comboBoxOriginLanguage.getSelectedIndex();
+				int destLang = comboBoxDestinationLanguage.getSelectedIndex();
 												
 				dlmCourses.removeAllElements();				
 				checkCourses(originLang, destLang);
@@ -242,26 +243,32 @@ public class AdministerCourses extends JPanel {
 	}
 	
 	
-	private void checkCourses(String originLang, String destLang) {
+	private void checkCourses(int originLang, int destLang) {
 		
 		// checkCourses - Filtro CURSOS
 		// QUERY donde filtra todos los CURSOS que cumplan con los 2 IDIOMAS
 		// seleccionados en las JComboBox.
 		// Añade el nombre del CURSO a la JList de CURSOS.
 		
-		ICourse courseManager = new CourseImpl();
-		List<Course> courses = courseManager.getAllCourses(originLang, destLang);
-		for (Course c : courses) {
-            dlmCourses.addElement("CURSO - ["+originLang+" - "+destLang+"]");
-		}		
-
-		if (dlmCourses.getSize() == 0) {
+		ILanguageCourse languageCourseManager = new LanguageCourseImpl();
+		System.out.println(originLang + " || " + destLang);
+		List<LanguageCourse> courses =  languageCourseManager.getAllCourses(originLang, destLang);		
+		
+		System.out.println(courses.size());
+		
+		if (courses.size() == 0) {
+			// Si la QUERY NO obtiene coincidencias, activa btnCreateCourse
             btnCreateCourse.setEnabled(true);
-        }
+        }else {
+    		// Si la QUERY SI obtiene coincidencias, añade todos los CURSOS a la JList
+        	
+        	// ## Falta x hacer FOREACH (Da error CastException o algo asi)
+    		dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(originLang) + " // " + comboBoxDestinationLanguage.getItemAt(destLang) + "]");
+		}
 
     }
 	
-	private void addCourse(String originLang, String destLang) {
+	private void addCourse(int originLang, int destLang) {
 		
 		// addCourse
 		// Al pulsar btnCreateCourse se activa este método que añade
@@ -269,7 +276,13 @@ public class AdministerCourses extends JPanel {
 		// seleccionados en las JComboBox
 		
 		dlmCourses.removeAllElements();
-		dlmCourses.addElement("CURSO - [" + originLang + " - " + destLang + "]");
+		
+		// Ejecuta el METODO HIBERNATE que añade el CURSO
+		ILanguageCourse languageCourseManager = new LanguageCourseImpl();
+		languageCourseManager.insertCourse(originLang, destLang);
+		
+		// Muestra el CURSO añadido en la JList, al volver a filtrar ya lo mostrará como parte de la BBDD
+		dlmCourses.addElement("CURSO - [" + comboBoxOriginLanguage.getItemAt(originLang) + " // " + comboBoxDestinationLanguage.getItemAt(destLang) + "]");
 		btnCreateCourse.setEnabled(false);
 		
 	}
