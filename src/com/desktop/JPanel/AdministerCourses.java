@@ -39,7 +39,9 @@ public class AdministerCourses extends JPanel {
 	public AdministerCourses() {		
 		
 		ILanguage languageManager = new LanguageImpl();
-		List<Language> languages = languageManager.getAllLanguages();			
+		List<Language> languages = languageManager.getAllLanguages();	
+		
+		System.out.println(languages.size());
 		
 		JPanel courseSelectorPanel = new JPanel();
 			
@@ -175,8 +177,8 @@ public class AdministerCourses extends JPanel {
 		btnCreateCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				int originLang = comboBoxOriginLanguage.getSelectedIndex();
-				int destLang = comboBoxDestinationLanguage.getSelectedIndex();
+				short originLang = (short) comboBoxOriginLanguage.getSelectedIndex();
+				short destLang = (short) comboBoxDestinationLanguage.getSelectedIndex();
 				
 				addCourse(originLang, destLang);
 			}
@@ -187,8 +189,8 @@ public class AdministerCourses extends JPanel {
 		btnApplyFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				int originLang = comboBoxOriginLanguage.getSelectedIndex();
-				int destLang = comboBoxDestinationLanguage.getSelectedIndex();
+				short originLang = (short) comboBoxOriginLanguage.getSelectedIndex();
+				short destLang = (short) comboBoxDestinationLanguage.getSelectedIndex();
 												
 				dlmCourses.removeAllElements();				
 				checkCourses(originLang, destLang);
@@ -243,7 +245,7 @@ public class AdministerCourses extends JPanel {
 	}
 	
 	
-	private void checkCourses(int originLang, int destLang) {
+	private void checkCourses(short originLang, short destLang) {
 		
 		// checkCourses - Filtro CURSOS
 		// QUERY donde filtra todos los CURSOS que cumplan con los 2 IDIOMAS
@@ -263,12 +265,15 @@ public class AdministerCourses extends JPanel {
     		// Si la QUERY SI obtiene coincidencias, añade todos los CURSOS a la JList
         	
         	// ## Falta x hacer FOREACH (Da error CastException o algo asi)
-    		dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(originLang) + " // " + comboBoxDestinationLanguage.getItemAt(destLang) + "]");
+        	for (LanguageCourse lc : courses) {
+				dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(lc.getLanguage_ID()) + " // " + comboBoxDestinationLanguage.getItemAt(lc.getCourse_ID()) + "]");
+			}
+    		// dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(originLang) + " // " + comboBoxDestinationLanguage.getItemAt(destLang) + "]");
 		}
 
     }
 	
-	private void addCourse(int originLang, int destLang) {
+	private void addCourse(short originLang, short destLang) {
 		
 		// addCourse
 		// Al pulsar btnCreateCourse se activa este método que añade
