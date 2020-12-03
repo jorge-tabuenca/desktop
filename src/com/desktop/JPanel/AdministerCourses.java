@@ -9,16 +9,17 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import com.duolingo.interfaces.ICategory;
+import com.duolingo.interfaces.ICourse;
 import com.duolingo.interfaces.ILanguage;
 import com.duolingo.interfaces.ILanguageCourse;
 import com.duolingo.interfaces.impl.CategoryImpl;
+import com.duolingo.interfaces.impl.CourseImpl;
 import com.duolingo.interfaces.impl.LanguageCourseImpl;
 import com.duolingo.interfaces.impl.LanguageImpl;
 import com.duolingo.model.Category;
 import com.duolingo.model.Course;
 import com.duolingo.model.Language;
 import com.duolingo.model.LanguageCourse;
-
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -39,9 +40,10 @@ public class AdministerCourses extends JPanel {
 	public AdministerCourses() {		
 		
 		ILanguage languageManager = new LanguageImpl();
-		List<Language> languages = languageManager.getAllLanguages();	
+		ICourse courseManager = new CourseImpl();
 		
-		System.out.println(languages.size());
+		List<Language> languages = languageManager.getAllLanguages();	
+		List<Course> courses = courseManager.getAllCourses();
 		
 		JPanel courseSelectorPanel = new JPanel();
 			
@@ -67,8 +69,7 @@ public class AdministerCourses extends JPanel {
 			}
 		});
 		
-		JList listLevels = new JList();
-		
+		JList listLevels = new JList();		
 		
 		JButton btnAddCategory = new JButton("A\u00F1adir categoria");
 		btnAddCategory.addActionListener(new ActionListener() {
@@ -80,9 +81,7 @@ public class AdministerCourses extends JPanel {
 		
 		JButton btnAddLevel = new JButton("A\u00F1adir nivel");		
 		JButton btnAddExercice = new JButton("A\u00D1ADIR PREGUNTA");		
-		JButton btnShowExercice = new JButton("VISUALIZAR PREGUNTAS");
-		
-		
+		JButton btnShowExercice = new JButton("VISUALIZAR PREGUNTAS");		
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -168,8 +167,8 @@ public class AdministerCourses extends JPanel {
 		comboBoxDestinationLanguage.setModel(new DefaultComboBoxModel(new String[] {"Selecciona Idioma"}));
 		
 		// Añade todos los idiomas disponibles en la BBDD al JComboBox
-		for (Language l : languages) {
-			comboBoxDestinationLanguage.addItem(l.getName());
+		for (Course c : courses) {
+			comboBoxDestinationLanguage.addItem(c.getName());
 		}
 		
 		btnCreateCourse.setText("Crear curso");

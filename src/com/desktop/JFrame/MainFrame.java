@@ -99,12 +99,7 @@ public class MainFrame extends JFrame {
 				panel.removeAll();
 				panel.add(administerCourses);
 				
-				//pack();
-				
 				panel.setVisible(true);
-				
-				
-				//getContentPane().setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
 				
 				invalidate();
 				validate();
