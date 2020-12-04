@@ -36,6 +36,7 @@ public class AdministerCourses extends JPanel {
 	JList<String> listCategories, listCourses;
 	JComboBox comboBoxOriginLanguage, comboBoxDestinationLanguage;
 	JButton btnCreateCourse = new JButton();
+	private int idRelationCourseLanguage = 0;
 	
 	public AdministerCourses() {		
 		
@@ -63,8 +64,7 @@ public class AdministerCourses extends JPanel {
 				if (me.getClickCount() == 1) {
 					dlmCategories.removeAllElements();
 					String courseName = listCourses.getSelectedValue();
-					checkCategories(courseName);
-					
+					checkCategories();					
 				}
 			}
 		});
@@ -191,7 +191,9 @@ public class AdministerCourses extends JPanel {
 				short originLang = (short) comboBoxOriginLanguage.getSelectedIndex();
 				short destLang = (short) comboBoxDestinationLanguage.getSelectedIndex();
 												
+				dlmCategories.removeAllElements();
 				dlmCourses.removeAllElements();				
+				idRelationCourseLanguage = 0;
 				checkCourses(originLang, destLang);
 			}
 		});
@@ -266,6 +268,7 @@ public class AdministerCourses extends JPanel {
         	// ## Falta x hacer FOREACH (Da error CastException o algo asi)
         	for (LanguageCourse lc : courses) {
 				dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(lc.getLanguage_ID()) + " // " + comboBoxDestinationLanguage.getItemAt(lc.getCourse_ID()) + "]");
+				idRelationCourseLanguage = lc.getId();
 			}
     		// dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(originLang) + " // " + comboBoxDestinationLanguage.getItemAt(destLang) + "]");
 		}
@@ -291,22 +294,18 @@ public class AdministerCourses extends JPanel {
 		
 	}
 	
-	private void checkCategories(String courseName) {
+	private void checkCategories() {
 		
 		// checkCategories
 		// Al seleccionar un CURSO, mostrará todas sus CATEGORÍAS aplicando
 		// una QUERY que filtrará los resultados.
 		
 		ICategory categoryManager = new CategoryImpl();
-		List<Category> categories = categoryManager.getAllCategories(courseName);
-		
-		dlmCategories.addElement(courseName); 		// MockUP -- El de abajo es el que funciona con la QUERY
+		List<Category> categories = categoryManager.getAllCategories(idRelationCourseLanguage);// MockUP -- El de abajo es el que funciona con la QUERY
 		
 		for (Category c : categories) {
 			dlmCategories.addElement(c.getName()); 	// Nombre de CATEGORIA
-			
-		}
-		
+		}		
 	}
 	
 	private void addCategory() {
