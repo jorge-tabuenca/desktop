@@ -115,10 +115,13 @@ public class MainFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				
 				AdministerExercices administerExercices = new AdministerExercices();
+				administerExercices.setSize(panel.getSize());
+				
 				panel.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 				
 				panel.removeAll();
 				panel.add(administerExercices);
+				
 				panel.setVisible(true);
 				
 				invalidate();

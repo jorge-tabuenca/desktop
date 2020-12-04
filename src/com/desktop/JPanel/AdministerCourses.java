@@ -344,4 +344,27 @@ public class AdministerCourses extends JPanel {
             } 
         }
 	}
+	
+	private void addLevel() {
+		
+		// addLevel()
+		// Si hay un CURSO y una CATEGORIA seleccionadas, al presionar el JButton btnAddLevel
+		// y mostrará un JOptionPane preguntando al usuario el nombre de este nuevo nivel.
+		// Una vez el usuario accepte lo añadirá a la BBDD y a la JList listLevels
+		
+		if (listCourses.getSelectedIndices().length == 1 && listCategories.getSelectedIndices().length == 1) {
+			String nameLevel = JOptionPane.showInputDialog("Nombre del nivel: ");
+			
+			if (!(nameLevel.isBlank() || nameLevel.isEmpty())) {
+				
+				int idCourse = listCourses.getSelectedIndex();
+				String nameCategory = listCategories.getSelectedValue();			
+				// categoryManager.insertCategoryLevel(idCourse, nameCategory);
+				
+			}
+			
+			
+		}
+		
+	}
 }
