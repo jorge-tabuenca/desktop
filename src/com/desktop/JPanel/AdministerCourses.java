@@ -36,12 +36,15 @@ public class AdministerCourses extends JPanel {
 	JList<String> listCategories, listCourses;
 	JComboBox comboBoxOriginLanguage, comboBoxDestinationLanguage;
 	JButton btnCreateCourse = new JButton();
-	private int idRelationCourseLanguage = 0;
+
+	ILanguage languageManager = new LanguageImpl();
+	ICourse courseManager = new CourseImpl();
+	ICategory categoryManager = new CategoryImpl();
+	ILanguageCourse languageCourseManager = new LanguageCourseImpl();
+
 	
 	public AdministerCourses() {		
 		
-		ILanguage languageManager = new LanguageImpl();
-		ICourse courseManager = new CourseImpl();
 		
 		List<Language> languages = languageManager.getAllLanguages();	
 		List<Course> courses = courseManager.getAllCourses();
@@ -63,8 +66,11 @@ public class AdministerCourses extends JPanel {
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() == 1) {
 					dlmCategories.removeAllElements();
-					String courseName = listCourses.getSelectedValue();
-					checkCategories();					
+					
+					int languageID = comboBoxOriginLanguage.getSelectedIndex();
+					int courseID = comboBoxDestinationLanguage.getSelectedIndex();
+					
+					checkCategories(languageID, courseID);					
 				}
 			}
 		});
@@ -193,7 +199,6 @@ public class AdministerCourses extends JPanel {
 												
 				dlmCategories.removeAllElements();
 				dlmCourses.removeAllElements();				
-				idRelationCourseLanguage = 0;
 				checkCourses(originLang, destLang);
 			}
 		});
@@ -253,22 +258,22 @@ public class AdministerCourses extends JPanel {
 		// seleccionados en las JComboBox.
 		// Añade el nombre del CURSO a la JList de CURSOS.
 		
-		ILanguageCourse languageCourseManager = new LanguageCourseImpl();
 		System.out.println(originLang + " || " + destLang);
 		List<LanguageCourse> courses =  languageCourseManager.getAllCourses(originLang, destLang);		
 		
 		System.out.println(courses.size());
 		
 		if (courses.size() == 0) {
-			// Si la QUERY NO obtiene coincidencias, activa btnCreateCourse
             btnCreateCourse.setEnabled(true);
         }else {
-    		// Si la QUERY SI obtiene coincidencias, añade todos los CURSOS a la JList
+    		// Si la QUERY SI obtiene coincidencias, desactiva el botón btnCreareCourse
+        	// y añade todos los CURSOS a la JList
+        	btnCreateCourse.setEnabled(false);
         	
         	// ## Falta x hacer FOREACH (Da error CastException o algo asi)
         	for (LanguageCourse lc : courses) {
 				dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(lc.getLanguage_ID()) + " // " + comboBoxDestinationLanguage.getItemAt(lc.getCourse_ID()) + "]");
-				idRelationCourseLanguage = lc.getId();
+				// idRelationCourseLanguage = lc.getId();
 			}
     		// dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(originLang) + " // " + comboBoxDestinationLanguage.getItemAt(destLang) + "]");
 		}
@@ -294,14 +299,13 @@ public class AdministerCourses extends JPanel {
 		
 	}
 	
-	private void checkCategories() {
+	private void checkCategories(int languageID, int courseID) {
 		
 		// checkCategories
 		// Al seleccionar un CURSO, mostrará todas sus CATEGORÍAS aplicando
 		// una QUERY que filtrará los resultados.
 		
-		ICategory categoryManager = new CategoryImpl();
-		List<Category> categories = categoryManager.getAllCategories(idRelationCourseLanguage);// MockUP -- El de abajo es el que funciona con la QUERY
+		List<Category> categories = categoryManager.getAllCategories(languageID, courseID);// MockUP -- El de abajo es el que funciona con la QUERY
 		
 		for (Category c : categories) {
 			dlmCategories.addElement(c.getName()); 	// Nombre de CATEGORIA
