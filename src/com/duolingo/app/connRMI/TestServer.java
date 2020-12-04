@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.duolingo.interfaces.ICourse;
 import com.duolingo.interfaces.ILanguageCourse;
 import com.duolingo.interfaces.impl.CourseImpl;
 import com.duolingo.interfaces.impl.LanguageCourseImpl;
 import com.duolingo.model.Course;
 import com.duolingo.model.LanguageCourse;
-
 import net.sf.lipermi.exception.LipeRMIException;
 import net.sf.lipermi.handler.CallHandler;
 import net.sf.lipermi.net.IServerListener;
@@ -81,7 +79,4 @@ public class TestServer implements ITestService{
         TestServer testServer = new TestServer();
 
 	}
-
-	
-
 }
