@@ -80,7 +80,11 @@ public class AdministerCourses extends JPanel {
 		JButton btnAddCategory = new JButton("A\u00F1adir categoria");
 		btnAddCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addCategory();
+				
+				int languageID = comboBoxOriginLanguage.getSelectedIndex();
+				int courseID = comboBoxDestinationLanguage.getSelectedIndex();
+				
+				addCategory(languageID, courseID);
 				
 			}
 		});
@@ -312,7 +316,7 @@ public class AdministerCourses extends JPanel {
 		}		
 	}
 	
-	private void addCategory() {
+	private void addCategory(int languageID, int courseID) {
 		
 		// addCategory
 		// Si hay un CURSO seleccionado, al presionar el JButton btnAddCategory
@@ -323,6 +327,8 @@ public class AdministerCourses extends JPanel {
 		if(listCourses.getSelectedValue() != null) {          
 			String nameCategory = JOptionPane.showInputDialog("Nombre de la categoria:");
             Boolean isRepeated = false;
+            
+            categoryManager.insertCategory(languageID, courseID, nameCategory);
             
             for (int i=0; i<dlmCategories.size();i++) {
             	if(dlmCategories.get(i).toLowerCase().equals(nameCategory.toLowerCase())) {
