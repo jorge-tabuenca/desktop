@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.desktop.JPanel.AdministerCourses;
+import com.desktop.JPanel.AdministerExercices;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -113,7 +114,13 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				AdministerExercices administerExercices = new AdministerExercices();
+				panel.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+				
 				panel.removeAll();
+				panel.add(administerExercices);
+				panel.setVisible(true);
+				
 				invalidate();
 				validate();
 				

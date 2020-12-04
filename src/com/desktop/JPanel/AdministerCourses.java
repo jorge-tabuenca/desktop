@@ -268,7 +268,7 @@ public class AdministerCourses extends JPanel {
         	// ## Falta x hacer FOREACH (Da error CastException o algo asi)
         	for (LanguageCourse lc : courses) {
 				dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(lc.getLanguage_ID()) + " // " + comboBoxDestinationLanguage.getItemAt(lc.getCourse_ID()) + "]");
-				idRelationCourseLanguage = lc.getId();
+				// idRelationCourseLanguage = lc.getId();
 			}
     		// dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(originLang) + " // " + comboBoxDestinationLanguage.getItemAt(destLang) + "]");
 		}
