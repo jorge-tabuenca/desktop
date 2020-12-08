@@ -1,21 +1,28 @@
 package com.desktop.JPanel;
 
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
+import javax.swing.JTextField;
+import java.awt.GridLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import com.desktop.JFrame.AddExerciceFrame;
+import com.desktop.JFrame.MainFrame;
 import com.duolingo.interfaces.ICategory;
 import com.duolingo.interfaces.ICourse;
 import com.duolingo.interfaces.ILanguage;
 import com.duolingo.interfaces.ILanguageCourse;
+import com.duolingo.interfaces.ILevel;
 import com.duolingo.interfaces.impl.CategoryImpl;
 import com.duolingo.interfaces.impl.CourseImpl;
 import com.duolingo.interfaces.impl.LanguageCourseImpl;
 import com.duolingo.interfaces.impl.LanguageImpl;
+import com.duolingo.interfaces.impl.LevelImpl;
 import com.duolingo.model.Category;
 import com.duolingo.model.Course;
 import com.duolingo.model.Language;
@@ -41,10 +48,13 @@ public class AdministerCourses extends JPanel {
 	ICourse courseManager = new CourseImpl();
 	ICategory categoryManager = new CategoryImpl();
 	ILanguageCourse languageCourseManager = new LanguageCourseImpl();
+	ILevel levelManager = new LevelImpl();
 
+	private JFrame frame;
 	
-	public AdministerCourses() {		
+	public AdministerCourses(MainFrame frame) {		
 		
+		this.frame = frame;
 		
 		List<Language> languages = languageManager.getAllLanguages();	
 		List<Course> courses = courseManager.getAllCourses();
@@ -56,14 +66,43 @@ public class AdministerCourses extends JPanel {
 		JLabel lblListLevels = new JLabel("Niveles de categor\u00EDa seleccionada");
 		JLabel lblListCourses = new JLabel("Cursos\r\n");
 		
+		JButton btnAddLevel = new JButton("A\u00F1adir nivel");		
+		btnAddLevel.setEnabled(false);
+		btnAddLevel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int languageID = comboBoxOriginLanguage.getSelectedIndex();
+				int courseID = comboBoxDestinationLanguage.getSelectedIndex();
+				int position = listCategories.getSelectedIndex();
+				
+				int categoryID = categoryManager.getCategoryID(languageID, courseID, position);
+				addLevel(categoryID);
+			}
+		});
 		
 		dlmCategories = new DefaultListModel<>();
 		listCategories = new JList<>(dlmCategories);
+		listCategories.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				if (listCourses.getSelectedIndices().length == 1 && listCategories.getSelectedIndices().length == 1) {
+					btnAddLevel.setEnabled(true);
+				}else {
+					btnAddLevel.setEnabled(false);
+				}
+			}
+		});
 		
 		dlmCourses = new DefaultListModel<>();
 		listCourses = new JList<>(dlmCourses);		
 		listCourses.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
+				
+				if (listCourses.getSelectedIndices().length == 1 && listCategories.getSelectedIndices().length == 1) {
+					btnAddLevel.setEnabled(true);
+				}else {
+					btnAddLevel.setEnabled(false);
+				}
+				
 				if (me.getClickCount() == 1) {
 					dlmCategories.removeAllElements();
 					
@@ -89,8 +128,20 @@ public class AdministerCourses extends JPanel {
 			}
 		});
 		
-		JButton btnAddLevel = new JButton("A\u00F1adir nivel");		
-		JButton btnAddExercice = new JButton("A\u00D1ADIR PREGUNTA");		
+		JButton btnAddExercice = new JButton("A\u00D1ADIR PREGUNTA");	
+		
+		btnAddExercice.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String categoryName = listCategories.getSelectedValue().toString();
+				System.out.println(categoryName);
+				int categoryId = categoryManager.getCategoryByName(categoryName);
+				frame.addExcercicePanel(categoryId);			
+			}
+		});
+		
 		JButton btnShowExercice = new JButton("VISUALIZAR PREGUNTAS");		
 		
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -345,7 +396,7 @@ public class AdministerCourses extends JPanel {
         }
 	}
 	
-	private void addLevel() {
+	private void addLevel(int categoryID) {
 		
 		// addLevel()
 		// Si hay un CURSO y una CATEGORIA seleccionadas, al presionar el JButton btnAddLevel
@@ -353,14 +404,26 @@ public class AdministerCourses extends JPanel {
 		// Una vez el usuario accepte lo añadirá a la BBDD y a la JList listLevels
 		
 		if (listCourses.getSelectedIndices().length == 1 && listCategories.getSelectedIndices().length == 1) {
-			String nameLevel = JOptionPane.showInputDialog("Nombre del nivel: ");
 			
-			if (!(nameLevel.isBlank() || nameLevel.isEmpty())) {
+			String[] arrayTiers = new String[] {"1", "2", "3", "4", "5"};
+			JTextField textField = new JTextField();
+			JComboBox cmbTiers = new JComboBox<>(arrayTiers);
+			cmbTiers.setEditable(false);
+			
+			JPanel optionPane = new JPanel(new GridLayout(1, 1));
+			optionPane.add(textField);
+			optionPane.add(cmbTiers);
+			JOptionPane.showMessageDialog(null, optionPane, "Introduce nombre y dificultad", JOptionPane.QUESTION_MESSAGE);
+			
+			String nameLevel = textField.getText();
+			int tierLevel = cmbTiers.getSelectedIndex()+1;
+						
+			if (!(nameLevel.isBlank() || nameLevel.isEmpty())) {	
+				levelManager.insertLevel(tierLevel, nameLevel, categoryID);
+				JOptionPane.showMessageDialog(null, "Nivel añadido con exito!");
 				
-				int idCourse = listCourses.getSelectedIndex();
-				String nameCategory = listCategories.getSelectedValue();			
-				// categoryManager.insertCategoryLevel(idCourse, nameCategory);
-				
+			}else {
+				JOptionPane.showMessageDialog(null, "Nombre del nivel en blanco o inválido. Abortando", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			
 			

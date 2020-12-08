@@ -4,6 +4,9 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+
+import com.desktop.JFrame.AddExerciceFrame;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,18 +18,13 @@ public class AdministerExercices extends JPanel{
     private GridBagConstraints gbc = new GridBagConstraints();
     private Border eBorder = BorderFactory.createEtchedBorder();
     private static ArrayList<String> arrayTypeExercises = new ArrayList<>();
-    int numberTypeExercises = 7;
-
-    public static void main(String[] args) {
-    	AdministerExercices testGBL = new AdministerExercices();
-        testGBL.setVisible(true);
-    }
+    int numberTypeExercises = 6;
 
     public AdministerExercices(){
 
         // TestGBL
-        // Constructor. Se establecen las propiedades del JFrame (habr√≠a que cambiarlo a JPanel)
-        // Una vez creado el JFrame, ejecuta m√©todos para rellenarlo y a√±adirle contenido.
+        // Constructor. Se establecen las propiedades del JFrame (habrÌa que cambiarlo a JPanel)
+        // Una vez creado el JFrame, ejecuta mÈtodos para rellenarlo y aÒadirle contenido.
 
     	
         setSize(1920, 1080);
@@ -40,10 +38,10 @@ public class AdministerExercices extends JPanel{
 
         // addPanelLeft()
         // Crea un JPanel panelLeft, le establece un layout de tipo
-        // GridLayout (2, 1) [Para que hayan dentro 2 JPanel m√°s adelante..]
+        // GridLayout (2, 1) [Para que hayan dentro 2 JPanel m·s adelante..]
         // Y se le aplica al GridBagConstraint un porcentaje que equivale al
-        // 30% del ta√±ano total de la pantalla. Una vez creado y con todos sus
-        // datos, lo a√±ade al JFrame a la IZQUIERDA.
+        // 30% del taÒano total de la pantalla. Una vez creado y con todos sus
+        // datos, lo aÒade al JFrame a la IZQUIERDA.
 
         panelLeft = new JPanel();
         panelLeft.setLayout(new GridLayout(2, 1));
@@ -66,8 +64,8 @@ public class AdministerExercices extends JPanel{
         // Crea un JPanel panelRight, le establece un layout de tipo
         // GridLayout (numberTypeExercices [7], 1). Un margen entre cada
         // item del GridLayout de valor 5. Y se le aplica al GridBagConstraint
-        // un porcentaje que equivale al 70% del ta√±ano total de la pantalla.
-        // Una vez creado y con todos sus datos, lo a√±ade al JFrame a la DERECHA.
+        // un porcentaje que equivale al 70% del taÒano total de la pantalla.
+        // Una vez creado y con todos sus datos, lo aÒade al JFrame a la DERECHA.
 
         panelRight = new JPanel();
         GridLayout layout = new GridLayout(numberTypeExercises,1);
@@ -90,8 +88,8 @@ public class AdministerExercices extends JPanel{
     private void addTypeExButtons(){
 
         // addTypeExButtons()
-        // A√±ade al JPanel "panelRight" tantos botones como TIPOS DE EJERCICIOS
-        // hayan en la BBDD (MockUP = 7). El layout del JPanel panelRight √©s
+        // AÒade al JPanel "panelRight" tantos botones como TIPOS DE EJERCICIOS
+        // hayan en la BBDD (MockUP = 7). El layout del JPanel panelRight Ès
         // de tipo GridLayout(C = 1, R = numberTypeExercice [7])
 
         arrayTypeExercises.add("TRADUCCIO_OBERTA");
@@ -100,7 +98,7 @@ public class AdministerExercices extends JPanel{
         arrayTypeExercises.add("LISTENING_OBERT");
         arrayTypeExercises.add("APARELLA_PARAULES");
         arrayTypeExercises.add("OMPLE_UNA_PARAULA");
-        arrayTypeExercises.add("TIPUS_TEST");
+        
 
         for (int i = 0; i < numberTypeExercises; i++){
             JButton btn = new JButton(arrayTypeExercises.get(i));
@@ -111,18 +109,26 @@ public class AdministerExercices extends JPanel{
             });
             panelRight.add(btn);
         }
+        JButton btn = new JButton("TIPUS TEST");
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new AddExerciceFrame();
+                
+            }
+        });
+        panelRight.add(btn);
     }
 
     private void addPanelLabels(){
 
         // addPanelLabels()
         // Crea una JLabel y le asigna tu texto a partir de los datos guardados en el String[]
-        // Una vez creada la JLabel cambia su fuente y tama√±o a Calibri 20
+        // Una vez creada la JLabel cambia su fuente y tamaÒo a Calibri 20
 
-        // Esta en MockUP, habr√≠a que cambiar este JPanel (panelLabels) a GroupLayout para mejorar
-        // su calidad y presentaci√≥n...
+        // Esta en MockUP, habrÌa que cambiar este JPanel (panelLabels) a GroupLayout para mejorar
+        // su calidad y presentaciÛn...
 
-        String [] arrayLabels = new String [] {"Espa√±ol", "Catal√°n", "Animales", "1"};
+        String [] arrayLabels = new String [] {"EspaÒol", "Catal·n", "Animales", "1"};
         panelLabels = new JPanel(new GridLayout(arrayLabels.length, 1));
 
         for (int i = 0; i < arrayLabels.length; i++){
@@ -138,8 +144,8 @@ public class AdministerExercices extends JPanel{
     private void addPanelTree(){
 
         // addPanelTree
-        // M√©todo donde se crea el JPanel panelTree que contendr√°
-        // un JTree (m√°s adelante...)
+        // MÈtodo donde se crea el JPanel panelTree que contendr·
+        // un JTree (m·s adelante...)
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
         DefaultTreeModel dtm = new DefaultTreeModel(root);
