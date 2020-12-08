@@ -12,10 +12,8 @@ import javax.naming.RefAddr;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import com.desktop.JPanel.AdministerCourses;
 import com.desktop.JPanel.AdministerExercices;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JMenuBar;
@@ -26,6 +24,7 @@ import java.awt.event.MouseEvent;
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
+	private JPanel panel = new JPanel();
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -60,8 +59,6 @@ public class MainFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JPanel panel = new JPanel();
-		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -91,7 +88,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				AdministerCourses administerCourses = new AdministerCourses();
+				AdministerCourses administerCourses = new AdministerCourses(MainFrame.this);
 				
 				administerCourses.setSize(panel.getSize());
 				
@@ -109,11 +106,12 @@ public class MainFrame extends JFrame {
 		});
 		menu.add(adminCourses);
 		
-		JMenu adminUsers = new JMenu("Administrar Usuarios");
-		adminUsers.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		contentPane.setLayout(gl_contentPane);
+	}
+	
+	public void addExcercicePanel(int categoryID) {
 				
+		System.out.println(categoryID);
 				AdministerExercices administerExercices = new AdministerExercices();
 				administerExercices.setSize(panel.getSize());
 				
@@ -126,13 +124,7 @@ public class MainFrame extends JFrame {
 				
 				invalidate();
 				validate();
+				MainFrame.this.revalidate();
 				
-				
-			}
-		});
-				
-		menu.add(adminUsers);
-		
-		contentPane.setLayout(gl_contentPane);
 	}
 }

@@ -8,7 +8,11 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import com.desktop.JFrame.AddExerciceFrame;
+import com.desktop.JFrame.MainFrame;
 import com.duolingo.interfaces.ICategory;
 import com.duolingo.interfaces.ICourse;
 import com.duolingo.interfaces.ILanguage;
@@ -46,9 +50,11 @@ public class AdministerCourses extends JPanel {
 	ILanguageCourse languageCourseManager = new LanguageCourseImpl();
 	ILevel levelManager = new LevelImpl();
 
+	private JFrame frame;
 	
-	public AdministerCourses() {		
+	public AdministerCourses(MainFrame frame) {		
 		
+		this.frame = frame;
 		
 		List<Language> languages = languageManager.getAllLanguages();	
 		List<Course> courses = courseManager.getAllCourses();
@@ -122,8 +128,20 @@ public class AdministerCourses extends JPanel {
 			}
 		});
 		
+		JButton btnAddExercice = new JButton("A\u00D1ADIR PREGUNTA");	
 		
-		JButton btnAddExercice = new JButton("A\u00D1ADIR PREGUNTA");		
+		btnAddExercice.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String categoryName = listCategories.getSelectedValue().toString();
+				System.out.println(categoryName);
+				int categoryId = categoryManager.getCategoryByName(categoryName);
+				frame.addExcercicePanel(categoryId);			
+			}
+		});
+		
 		JButton btnShowExercice = new JButton("VISUALIZAR PREGUNTAS");		
 		
 		GroupLayout groupLayout = new GroupLayout(this);
