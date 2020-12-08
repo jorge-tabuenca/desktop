@@ -12,9 +12,8 @@ import javax.naming.RefAddr;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import com.desktop.JPanel.AdministerCourses;
-
+import com.desktop.JPanel.AdministerExercices;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JMenuBar;
@@ -25,6 +24,7 @@ import java.awt.event.MouseEvent;
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
+	private JPanel panel = new JPanel();
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -32,7 +32,6 @@ public class MainFrame extends JFrame {
 				try {					
 					MainFrame frame = new MainFrame();
 					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-					frame.setVisible(true);
 					Image image;
 					URL url = new URL("https://i.imgur.com/5kwCNbM.png%22");
 				    image = ImageIO.read(url);
@@ -41,6 +40,7 @@ public class MainFrame extends JFrame {
 				    frame.getContentPane().setPreferredSize(screenSize);
 				    frame.setIconImage(image);
 				    frame.setResizable(false);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -58,8 +58,6 @@ public class MainFrame extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		
-		JPanel panel = new JPanel();
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -90,7 +88,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				AdministerCourses administerCourses = new AdministerCourses();
+				AdministerCourses administerCourses = new AdministerCourses(MainFrame.this);
 				
 				administerCourses.setSize(panel.getSize());
 				
@@ -99,12 +97,7 @@ public class MainFrame extends JFrame {
 				panel.removeAll();
 				panel.add(administerCourses);
 				
-				//pack();
-				
 				panel.setVisible(true);
-				
-				
-				//getContentPane().setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
 				
 				invalidate();
 				validate();
@@ -113,21 +106,25 @@ public class MainFrame extends JFrame {
 		});
 		menu.add(adminCourses);
 		
-		JMenu adminUsers = new JMenu("Administrar Usuarios");
-		adminUsers.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		contentPane.setLayout(gl_contentPane);
+	}
+	
+	public void addExcercicePanel(int categoryID) {
+				
+		System.out.println(categoryID);
+				AdministerExercices administerExercices = new AdministerExercices();
+				administerExercices.setSize(panel.getSize());
+				
+				panel.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 				
 				panel.removeAll();
+				panel.add(administerExercices);
+				
+				panel.setVisible(true);
+				
 				invalidate();
 				validate();
+				MainFrame.this.revalidate();
 				
-				
-			}
-		});
-				
-		menu.add(adminUsers);
-		
-		contentPane.setLayout(gl_contentPane);
 	}
 }

@@ -3,6 +3,7 @@
   <groupId>desktop</groupId>
   <artifactId>desktop</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
@@ -16,4 +17,12 @@
       </plugin>
     </plugins>
   </build>
+  
+  <dependencies>
+  		<dependency>
+    		<groupId>com.tascape.qa</groupId>
+    		<artifactId>lipermi</artifactId>
+    		<version>1.0.1</version>
+		</dependency>
+  </dependencies>
 </project>
