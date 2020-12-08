@@ -41,7 +41,8 @@ public class AddExerciceFrame extends JFrame {
 		
 		IExercice exerciceManager = new ExerciceImpl();
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 605, 396);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
