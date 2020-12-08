@@ -12,10 +12,8 @@ import javax.naming.RefAddr;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import com.desktop.JPanel.AdministerCourses;
 import com.desktop.JPanel.AdministerExercices;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JMenuBar;
