@@ -33,7 +33,7 @@ public class TestServer implements ITestService{
 	    		languageCourse =  languageCourseManager.getAllCourses(languageID, (short)0);	
 	    			    		
 	    		ICourse courseManager = new CourseImpl();
-	    		course = courseManager.getAllCourses(); 
+	    		course = courseManager.getAll(); 
 	            
 	            server.addServerListener(new IServerListener() {
 	                
