@@ -3,6 +3,8 @@ package com.desktop.JPanel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -13,6 +15,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import com.desktop.JFrame.AddExerciceFrame;
 import com.desktop.JFrame.MainFrame;
+import com.desktop.JFrame.ShowExerciceFrame;
 import com.duolingo.interfaces.ICategory;
 import com.duolingo.interfaces.ICourse;
 import com.duolingo.interfaces.ILanguage;
@@ -127,6 +130,9 @@ public class AdministerCourses extends JPanel {
 			}
 		});
 		
+		JButton btnShowExercice = new JButton("VISUALIZAR PREGUNTAS");		
+		btnShowExercice.setEnabled(false);
+		
 		JButton btnAddExercice = new JButton("A\u00D1ADIR PREGUNTA");	
 		btnAddExercice.setEnabled(false);
 		
@@ -142,6 +148,7 @@ public class AdministerCourses extends JPanel {
 					
 					btnAddLevel.setEnabled(true);
 					btnAddExercice.setEnabled(false);
+					btnShowExercice.setEnabled(false);
 				}else {
 					btnAddLevel.setEnabled(false);
 				}
@@ -153,6 +160,7 @@ public class AdministerCourses extends JPanel {
 		listLevels.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 					btnAddExercice.setEnabled(true);
+					btnShowExercice.setEnabled(true);
 			}
 		});
 
@@ -168,8 +176,20 @@ public class AdministerCourses extends JPanel {
 			}
 		});
 		
-		JButton btnShowExercice = new JButton("VISUALIZAR PREGUNTAS");		
-		
+		btnShowExercice.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String categoryName = listCategories.getSelectedValue().toString();
+				System.out.println(categoryName);
+				int categoryId = categoryManager.getCategoryByName(categoryName);
+				
+				ShowExerciceFrame exerciceFrame = new ShowExerciceFrame(categoryId);					
+				exerciceFrame.setVisible(true);
+			}
+		});
+
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 				groupLayout.createParallelGroup(Alignment.LEADING)
@@ -283,6 +303,7 @@ public class AdministerCourses extends JPanel {
 				dlmLevels.removeAllElements();
 				btnAddLevel.setEnabled(false);
 				btnAddExercice.setEnabled(false);
+				btnShowExercice.setEnabled(false);
 				checkCourses(originLang, destLang);
 			}
 		});
