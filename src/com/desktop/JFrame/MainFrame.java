@@ -111,20 +111,20 @@ public class MainFrame extends JFrame {
 	
 	public void addExcercicePanel(int categoryID) {
 				
-		System.out.println(categoryID);
-				AdministerExercices administerExercices = new AdministerExercices();
-				administerExercices.setSize(panel.getSize());
+		System.out.println("Hola " + categoryID);
+		AdministerExercices administerExercices = new AdministerExercices(categoryID);
+		administerExercices.setSize(panel.getSize());
+			
+		panel.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+			
+		panel.removeAll();
+		panel.add(administerExercices);
 				
-				panel.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		panel.setVisible(true);
 				
-				panel.removeAll();
-				panel.add(administerExercices);
-				
-				panel.setVisible(true);
-				
-				invalidate();
-				validate();
-				MainFrame.this.revalidate();
+		invalidate();
+		validate();
+		MainFrame.this.revalidate();
 				
 	}
 }

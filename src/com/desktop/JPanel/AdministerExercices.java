@@ -20,7 +20,7 @@ public class AdministerExercices extends JPanel{
     private static ArrayList<String> arrayTypeExercises = new ArrayList<>();
     int numberTypeExercises = 6;
 
-    public AdministerExercices(){
+    public AdministerExercices(int categoryID){
 
         // TestGBL
         // Constructor. Se establecen las propiedades del JFrame (habría que cambiarlo a JPanel)
@@ -30,7 +30,7 @@ public class AdministerExercices extends JPanel{
         setSize(1920, 1080);
         setLayout(new GridBagLayout());
         addPanelLeft();
-        addPanelRight();
+        addPanelRight(categoryID);
 
     }
 
@@ -58,7 +58,7 @@ public class AdministerExercices extends JPanel{
 
     }
 
-    private void addPanelRight(){
+    private void addPanelRight(int categoryID){
 
         // addPanelRight()
         // Crea un JPanel panelRight, le establece un layout de tipo
@@ -72,7 +72,7 @@ public class AdministerExercices extends JPanel{
         layout.setVgap(5);
         panelRight.setLayout(layout);
 
-        addTypeExButtons();
+        addTypeExButtons(categoryID);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -85,7 +85,7 @@ public class AdministerExercices extends JPanel{
 
     }
 
-    private void addTypeExButtons(){
+    private void addTypeExButtons(int categoryID){
 
         // addTypeExButtons()
         // Añade al JPanel "panelRight" tantos botones como TIPOS DE EJERCICIOS
@@ -112,7 +112,7 @@ public class AdministerExercices extends JPanel{
         JButton btn = new JButton("TIPUS TEST");
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new AddExerciceFrame();
+                new AddExerciceFrame(categoryID);
                 
             }
         });
@@ -128,7 +128,7 @@ public class AdministerExercices extends JPanel{
         // Esta en MockUP, habría que cambiar este JPanel (panelLabels) a GroupLayout para mejorar
         // su calidad y presentación...
 
-        String [] arrayLabels = new String [] {"Español", "Catalán", "Animales", "1"};
+        String [] arrayLabels = new String [] {"Curso: Test", "Categoria: Test"};
         panelLabels = new JPanel(new GridLayout(arrayLabels.length, 1));
 
         for (int i = 0; i < arrayLabels.length; i++){
@@ -147,10 +147,10 @@ public class AdministerExercices extends JPanel{
         // Método donde se crea el JPanel panelTree que contendrá
         // un JTree (más adelante...)
 
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Test 1");
         DefaultTreeModel dtm = new DefaultTreeModel(root);
         JTree tree = new JTree(dtm);
-
+        
         panelTree = new JPanel();
         panelTree.add(tree);
         panelLeft.add(panelTree);

@@ -1,27 +1,19 @@
 package com.desktop.JFrame;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
+import com.duolingo.interfaces.ICategory;
 import com.duolingo.interfaces.IExercice;
-import com.duolingo.interfaces.ILanguage;
+import com.duolingo.interfaces.impl.CategoryImpl;
 import com.duolingo.interfaces.impl.ExerciceImpl;
-import com.duolingo.interfaces.impl.LanguageImpl;
-
+import com.duolingo.model.Exercice;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
-import java.awt.GridLayout;
-import java.awt.CardLayout;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -32,12 +24,14 @@ public class AddExerciceFrame extends JFrame {
 	private JTextField textField_TranslatedSentence;
 	private JTextField textFieldIncorrectSentence1;
 	private JTextField textFieldIncorrectSentence2;
+	ICategory categoryManager = new CategoryImpl();
 
 
 	/**
 	 * Create the frame.
+	 * @param categoryID 
 	 */
-	public AddExerciceFrame() {
+	public AddExerciceFrame(int categoryID) {
 		
 		IExercice exerciceManager = new ExerciceImpl();
 		
@@ -75,8 +69,24 @@ public class AddExerciceFrame extends JFrame {
 		btnExerciceToDDBB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				System.out.println("Hola2 " + categoryID);
+				String original = textFieldOriginalSentence.getText();
+				String correct = textField_TranslatedSentence.getText();
+				String incorrect1 = textFieldIncorrectSentence1.getText();
+				String incorrect2 = textFieldIncorrectSentence2.getText();
 				
-				exerciceManager.insertExercice("name", textFieldOriginalSentence.getText(), textField_TranslatedSentence.getText(), textFieldIncorrectSentence1.getText(), textFieldIncorrectSentence2.getText());
+				Exercice exercice = new Exercice();
+				
+				exercice.setCategory(categoryID);
+				exercice.setStatus(1);
+				exercice.setTypeExercice(1);
+				exercice.setWord1(original);
+				exercice.setWord2(correct);
+				exercice.setWord3(incorrect1);
+				exercice.setWord4(incorrect2);
+				
+				String query = "INSERT INTO `duolingobbdd`.`exercice` (`CATEGORY_ID`, `STATUS`, `TYPE_EXCERCICE`, `WORD1`, `WORD2`, `WORD3`, `WORD4`) VALUES ('1', '1', '1', 'd', 'f', 'f', 'f');";
+				exerciceManager.insertExercice(exercice);
 				dispose();
 				
 				
