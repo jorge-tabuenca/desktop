@@ -34,7 +34,7 @@ public class ShowExerciceFrame extends JFrame {
 		setSize(700,300);
 		setResizable(false);
 	    setPreferredSize(new Dimension(300, 700));
-	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	    setLocationRelativeTo(null);
 	    setVisible(true);
 		
@@ -45,7 +45,7 @@ public class ShowExerciceFrame extends JFrame {
 		for(Exercice exercice : exerciceList) {
 		
 			String typeExcercie = getTypeExcerciceName(exercice);
-			JButton exerciceButton = new JButton(exercice.getWord1() + " " + typeExcercie);
+			JButton exerciceButton = new JButton(exercice.getWord1() + " - Type:" + typeExcercie);
 			exerciceButton.setPreferredSize(new Dimension(660, 50));
 			bottonPanel.add(exerciceButton);
 		}
