@@ -1,30 +1,19 @@
 package com.desktop.JFrame;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import com.duolingo.interfaces.ICategory;
 import com.duolingo.interfaces.IExercice;
-import com.duolingo.interfaces.ILanguage;
 import com.duolingo.interfaces.impl.CategoryImpl;
 import com.duolingo.interfaces.impl.ExerciceImpl;
-import com.duolingo.interfaces.impl.LanguageImpl;
 import com.duolingo.model.Exercice;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
-import java.awt.GridLayout;
-import java.awt.CardLayout;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
