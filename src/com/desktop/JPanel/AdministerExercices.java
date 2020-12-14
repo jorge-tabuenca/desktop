@@ -4,9 +4,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-
-import com.desktop.JFrame.AddExerciceFrame;
-
+import com.desktop.JFrame.AddOpenTranslationFrame;
+import com.desktop.JFrame.AddTestExerciceFrame;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +17,7 @@ public class AdministerExercices extends JPanel{
     private GridBagConstraints gbc = new GridBagConstraints();
     private Border eBorder = BorderFactory.createEtchedBorder();
     private static ArrayList<String> arrayTypeExercises = new ArrayList<>();
-    int numberTypeExercises = 6;
+    int numberTypeExercises = 5;
 
     public AdministerExercices(int categoryID){
 
@@ -92,7 +91,6 @@ public class AdministerExercices extends JPanel{
         // hayan en la BBDD (MockUP = 7). El layout del JPanel panelRight és
         // de tipo GridLayout(C = 1, R = numberTypeExercice [7])
 
-        arrayTypeExercises.add("TRADUCCIO_OBERTA");
         arrayTypeExercises.add("TRADUCCIO_REORDENA_PARAULES");
         arrayTypeExercises.add("LISTENING_REORDENA");
         arrayTypeExercises.add("LISTENING_OBERT");
@@ -109,14 +107,21 @@ public class AdministerExercices extends JPanel{
             });
             panelRight.add(btn);
         }
-        JButton btn = new JButton("TIPUS TEST");
-        btn.addActionListener(new ActionListener() {
+        JButton testButton = new JButton("TIPUS TEST");
+        testButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new AddExerciceFrame(categoryID);
-                
+                new AddTestExerciceFrame(categoryID);               
             }
         });
-        panelRight.add(btn);
+        panelRight.add(testButton);
+        
+        JButton openTranslationButton = new JButton("TRADUCCIO_OBERTA");
+        openTranslationButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new AddOpenTranslationFrame(categoryID);             
+            }
+        });
+        panelRight.add(openTranslationButton);
     }
 
     private void addPanelLabels(){

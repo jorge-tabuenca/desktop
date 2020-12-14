@@ -13,7 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import com.desktop.JFrame.AddExerciceFrame;
+import com.desktop.JFrame.AddTestExerciceFrame;
 import com.desktop.JFrame.MainFrame;
 import com.desktop.JFrame.ShowExerciceFrame;
 import com.duolingo.interfaces.ICategory;

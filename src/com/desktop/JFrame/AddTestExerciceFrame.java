@@ -17,7 +17,7 @@ import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class AddExerciceFrame extends JFrame {
+public class AddTestExerciceFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textFieldOriginalSentence;
@@ -26,12 +26,7 @@ public class AddExerciceFrame extends JFrame {
 	private JTextField textFieldIncorrectSentence2;
 	ICategory categoryManager = new CategoryImpl();
 
-
-	/**
-	 * Create the frame.
-	 * @param categoryID 
-	 */
-	public AddExerciceFrame(int categoryID) {
+	public AddTestExerciceFrame(int categoryID) {
 		
 		IExercice exerciceManager = new ExerciceImpl();
 		
