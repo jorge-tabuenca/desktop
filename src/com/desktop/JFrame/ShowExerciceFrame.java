@@ -71,7 +71,7 @@ public class ShowExerciceFrame extends JFrame {
 	public String getTypeExcerciceName(Exercice exercice) {
 		String typeExcercie = "";
 		
-		switch (exercice.getCategory()) {
+		switch (exercice.getTypeExercice()) {
 			case 1:
 				typeExcercie = "Ex.Trad.Lliure";
 			break;	
@@ -84,7 +84,7 @@ public class ShowExerciceFrame extends JFrame {
 	
 	public void showPreviewExercice(Exercice exercice) {
 		
-		switch (exercice.getCategory()) {
+		switch (exercice.getTypeExercice()) {
 		case 1:
 			
 		break;	

@@ -64,7 +64,6 @@ public class AddTestExerciceFrame extends JFrame {
 		btnExerciceToDDBB.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("Hola2 " + categoryID);
 				String original = textFieldOriginalSentence.getText();
 				String correct = textField_TranslatedSentence.getText();
 				String incorrect1 = textFieldIncorrectSentence1.getText();
@@ -74,13 +73,12 @@ public class AddTestExerciceFrame extends JFrame {
 				
 				exercice.setCategory(categoryID);
 				exercice.setStatus(1);
-				exercice.setTypeExercice(1);
+				exercice.setTypeExercice(2);
 				exercice.setWord1(original);
 				exercice.setWord2(correct);
 				exercice.setWord3(incorrect1);
 				exercice.setWord4(incorrect2);
-				
-				String query = "INSERT INTO `duolingobbdd`.`exercice` (`CATEGORY_ID`, `STATUS`, `TYPE_EXCERCICE`, `WORD1`, `WORD2`, `WORD3`, `WORD4`) VALUES ('1', '1', '1', 'd', 'f', 'f', 'f');";
+
 				exerciceManager.insertExercice(exercice);
 				dispose();
 				

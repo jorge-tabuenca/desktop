@@ -5,6 +5,11 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.duolingo.interfaces.IExercice;
+import com.duolingo.interfaces.impl.ExerciceImpl;
+import com.duolingo.model.Exercice;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -19,15 +24,21 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.ScrollPaneConstants;
 import java.awt.GridLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import javax.swing.BoxLayout;
 
 public class AddOpenTranslationFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
-	private List<JTextField> phrasesList = new ArrayList<>();
-	private static int contador = 0;
+	private List<JTextField> options = new ArrayList<>();
+	private String enunciado;
+	private String opcionesSeparadas;
 
 	public AddOpenTranslationFrame(int categoryID) {
+		
+		IExercice exerciceManager = new ExerciceImpl();
 		
 		setVisible(true);
 		setResizable(false);
@@ -52,6 +63,7 @@ public class AddOpenTranslationFrame extends JFrame {
 		JButton addPhrase = new JButton("Agregar Posible Frase");
 		
 		JButton addExercice = new JButton("Aceptar");
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -90,7 +102,7 @@ public class AddOpenTranslationFrame extends JFrame {
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane(phrases);
-		phrases.setLayout(new GridLayout(0, 1, 0, 0));
+		phrases.setLayout(new BoxLayout(phrases, BoxLayout.Y_AXIS));
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
@@ -99,8 +111,33 @@ public class AddOpenTranslationFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				JTextField newPhrase = new JTextField();
 				newPhrase.setPreferredSize(new Dimension(660, 50));
+				options.add(newPhrase);
 				phrases.add(newPhrase);
 				revalidate();
+			}
+		});
+		
+		addExercice.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				opcionesSeparadas = "";
+				for(int i = 0; i < options.size(); i++) {
+					opcionesSeparadas = opcionesSeparadas + options.get(i).getText() + "||";
+		        }			
+				
+				Exercice exercice = new Exercice();
+				
+				exercice.setCategory(categoryID);
+				exercice.setStatus(1);
+				exercice.setTypeExercice(1);
+				exercice.setWord1(enunciado = textField.getText());
+				exercice.setWord2(opcionesSeparadas);
+				
+				exerciceManager.insertExercice(exercice);
+				
+				System.out.println(enunciado);
+				System.out.println(opcionesSeparadas);
+				dispose();
 			}
 		});
 		
