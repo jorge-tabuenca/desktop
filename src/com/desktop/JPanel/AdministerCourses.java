@@ -72,6 +72,8 @@ public class AdministerCourses extends JPanel {
 		JLabel lblListLevels = new JLabel("Niveles de categor\u00EDa seleccionada");
 		JLabel lblListCourses = new JLabel("Cursos\r\n");
 		
+		JButton btnAddCategory = new JButton("A\u00F1adir categoria");
+		
 		JButton btnAddLevel = new JButton("A\u00F1adir nivel");		
 		btnAddLevel.setEnabled(false);
 		btnAddLevel.addActionListener(new ActionListener() {
@@ -102,6 +104,7 @@ public class AdministerCourses extends JPanel {
 					int categoryID = categoryManager.getCategoryID(languageID, courseID, position);
 					checkLevels(categoryID);
 					
+					btnAddCategory.setEnabled(true);
 					btnAddLevel.setEnabled(true);
 				}else {
 					btnAddLevel.setEnabled(false);
@@ -117,8 +120,8 @@ public class AdministerCourses extends JPanel {
 				}
 			}
 		});
-		
-		JButton btnAddCategory = new JButton("A\u00F1adir categoria");
+			
+		btnAddCategory.setEnabled(false);
 		btnAddCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -295,6 +298,7 @@ public class AdministerCourses extends JPanel {
 		btnApplyFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				btnAddCategory.setEnabled(false);
 				short originLang = (short) comboBoxOriginLanguage.getSelectedIndex();
 				short destLang = (short) comboBoxDestinationLanguage.getSelectedIndex();
 												

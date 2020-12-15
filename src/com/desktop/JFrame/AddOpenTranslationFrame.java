@@ -27,6 +27,7 @@ import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 
 public class AddOpenTranslationFrame extends JFrame {
 
