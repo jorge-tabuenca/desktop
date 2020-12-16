@@ -6,10 +6,17 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import com.desktop.JFrame.AddOpenTranslationFrame;
 import com.desktop.JFrame.AddTestExerciceFrame;
+import com.duolingo.interfaces.IExercice;
+import com.duolingo.interfaces.impl.ExerciceImpl;
+import com.duolingo.model.Exercice;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdministerExercices extends JPanel{
 
@@ -18,8 +25,9 @@ public class AdministerExercices extends JPanel{
     private Border eBorder = BorderFactory.createEtchedBorder();
     private static ArrayList<String> arrayTypeExercises = new ArrayList<>();
     int numberTypeExercises = 5;
-
-    public AdministerExercices(int categoryID){
+    IExercice exerciceManager = new ExerciceImpl();
+    
+    public AdministerExercices(int categoryID, String categoryName, String level, String course){
 
         // TestGBL
         // Constructor. Se establecen las propiedades del JFrame (habría que cambiarlo a JPanel)
@@ -28,12 +36,12 @@ public class AdministerExercices extends JPanel{
     	
         setSize(1920, 1080);
         setLayout(new GridBagLayout());
-        addPanelLeft();
+        addPanelLeft(categoryID, categoryName, level, course);
         addPanelRight(categoryID);
 
     }
 
-    private void addPanelLeft(){
+    private void addPanelLeft(int categoryID, String categoryName, String level, String course){
 
         // addPanelLeft()
         // Crea un JPanel panelLeft, le establece un layout de tipo
@@ -45,8 +53,8 @@ public class AdministerExercices extends JPanel{
         panelLeft = new JPanel();
         panelLeft.setLayout(new GridLayout(2, 1));
 
-        addPanelLabels();
-        addPanelTree();
+        addPanelLabels(categoryName, level, course);
+        addPanelTree(categoryID);
 
         gbc.gridx = gbc.gridy = 0;
         gbc.gridwidth = gbc.gridheight = 1;
@@ -124,7 +132,7 @@ public class AdministerExercices extends JPanel{
         panelRight.add(openTranslationButton);
     }
 
-    private void addPanelLabels(){
+    private void addPanelLabels(String categoryName, String level, String course){
 
         // addPanelLabels()
         // Crea una JLabel y le asigna tu texto a partir de los datos guardados en el String[]
@@ -133,7 +141,7 @@ public class AdministerExercices extends JPanel{
         // Esta en MockUP, habría que cambiar este JPanel (panelLabels) a GroupLayout para mejorar
         // su calidad y presentación...
 
-        String [] arrayLabels = new String [] {"Curso: Test", "Categoria: Test"};
+        String [] arrayLabels = new String [] {"Curso: " + course, "Categoria: " + categoryName, "Level: " + level};
         panelLabels = new JPanel(new GridLayout(arrayLabels.length, 1));
 
         for (int i = 0; i < arrayLabels.length; i++){
@@ -146,20 +154,30 @@ public class AdministerExercices extends JPanel{
 
     }
 
-    private void addPanelTree(){
+    private void addPanelTree(int categoryID){
 
         // addPanelTree
         // Método donde se crea el JPanel panelTree que contendrá
         // un JTree (más adelante...)
 
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Test 1");
-        DefaultTreeModel dtm = new DefaultTreeModel(root);
-        JTree tree = new JTree(dtm);
+    	List<Exercice> exerciceList = exerciceManager.getAllExerciceByCategoryId(categoryID);
+    	
+        DefaultMutableTreeNode course = new DefaultMutableTreeNode("Ejercicios categoria actual");
+        
+        int i = 1;
+        
+        for(Exercice exercice : exerciceList) {
+
+			DefaultMutableTreeNode e = new DefaultMutableTreeNode("Ejercicio " + i);
+			course.add(e);	
+			i ++;
+        }
+
+        JTree tree = new JTree(course);
         
         panelTree = new JPanel();
         panelTree.add(tree);
         panelLeft.add(panelTree);
 
     }
-
 }

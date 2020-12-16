@@ -3,8 +3,6 @@ package com.desktop.JPanel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -12,8 +10,6 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
-
-import com.desktop.JFrame.AddTestExerciceFrame;
 import com.desktop.JFrame.MainFrame;
 import com.desktop.JFrame.ShowExerciceFrame;
 import com.duolingo.interfaces.ICategory;
@@ -31,14 +27,12 @@ import com.duolingo.model.Course;
 import com.duolingo.model.Language;
 import com.duolingo.model.LanguageCourse;
 import com.duolingo.model.Level;
-
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -73,6 +67,7 @@ public class AdministerCourses extends JPanel {
 		JLabel lblListCourses = new JLabel("Cursos\r\n");
 		
 		JButton btnAddCategory = new JButton("A\u00F1adir categoria");
+		btnAddCategory.setEnabled(false);
 		
 		JButton btnAddLevel = new JButton("A\u00F1adir nivel");		
 		btnAddLevel.setEnabled(false);
@@ -102,17 +97,15 @@ public class AdministerCourses extends JPanel {
 					int courseID = comboBoxDestinationLanguage.getSelectedIndex();
 					int position = listCategories.getSelectedIndex();
 					int categoryID = categoryManager.getCategoryID(languageID, courseID, position);
-					checkLevels(categoryID);
+					checkLevels(categoryID);					
 					
-					btnAddCategory.setEnabled(true);
-					btnAddLevel.setEnabled(true);
-				}else {
+					dlmLevels.removeAllElements();
 					btnAddLevel.setEnabled(false);
 				}
 				
 				if (me.getClickCount() == 1) {
 					dlmCategories.removeAllElements();
-					
+					btnAddCategory.setEnabled(true);
 					int languageID = comboBoxOriginLanguage.getSelectedIndex();
 					int courseID = comboBoxDestinationLanguage.getSelectedIndex();
 					
@@ -121,7 +114,6 @@ public class AdministerCourses extends JPanel {
 			}
 		});
 			
-		btnAddCategory.setEnabled(false);
 		btnAddCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -175,7 +167,7 @@ public class AdministerCourses extends JPanel {
 				String categoryName = listCategories.getSelectedValue().toString();
 				System.out.println(categoryName);
 				int categoryId = categoryManager.getCategoryByName(categoryName);
-				frame.addExcercicePanel(categoryId);			
+				frame.addExcercicePanel(categoryId, categoryName, listLevels.getSelectedValue().toString(), listCourses.getSelectedValue().toString());			
 			}
 		});
 		

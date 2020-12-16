@@ -123,7 +123,7 @@ public class AddOpenTranslationFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				opcionesSeparadas = "";
 				for(int i = 0; i < options.size(); i++) {
-					opcionesSeparadas = opcionesSeparadas + options.get(i).getText() + "||";
+					opcionesSeparadas = opcionesSeparadas + options.get(i).getText() + "//";
 		        }			
 				
 				Exercice exercice = new Exercice();
