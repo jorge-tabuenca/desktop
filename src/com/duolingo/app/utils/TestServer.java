@@ -1,4 +1,4 @@
-package com.duolingo.app.connRMI;
+package com.duolingo.app.utils;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -9,6 +9,7 @@ import com.duolingo.interfaces.ILanguageCourse;
 import com.duolingo.interfaces.impl.CourseImpl;
 import com.duolingo.interfaces.impl.LanguageCourseImpl;
 import com.duolingo.model.Course;
+import com.duolingo.model.Language;
 import com.duolingo.model.LanguageCourse;
 import net.sf.lipermi.exception.LipeRMIException;
 import net.sf.lipermi.handler.CallHandler;
@@ -18,23 +19,16 @@ import net.sf.lipermi.net.Server;
 
 public class TestServer implements ITestService{
 
-	public List<LanguageCourse> languageCourse;
-	public List<Course> course;
-	
-	public short languageID = 51;
-	
+	private List<LanguageCourse> languageCourse;
+	private List<Language> languageList;
+	private List<Course> course;
+		
 	public TestServer() {
 		try {CallHandler callHandler = new CallHandler();
 	            callHandler.registerGlobal(ITestService.class, this);
 	            Server server = new Server();
 	            server.bind(7777, callHandler);
-	            
-	            ILanguageCourse languageCourseManager = new LanguageCourseImpl();
-	    		languageCourse =  languageCourseManager.getAllCourses(languageID, (short)0);	
-	    			    		
-	    		ICourse courseManager = new CourseImpl();
-	    		course = courseManager.getAll(); 
-	            
+  
 	            server.addServerListener(new IServerListener() {
 	                
 	                @Override
@@ -56,10 +50,17 @@ public class TestServer implements ITestService{
 	        }
 	}
 	
+	
 	@Override
     public ArrayList<String> getResponse(short originLang) {
 		
 		ArrayList<String> arrayCourses = new ArrayList<>();
+		
+		ILanguageCourse languageCourseManager = new LanguageCourseImpl();
+ 		languageCourse =  languageCourseManager.getAllCourses(originLang, (short)0);	
+ 			    		
+ 		ICourse courseManager = new CourseImpl();
+ 		course = courseManager.getAll();       
 		
 		arrayCourses.add("Cursos disponibles");
 		for (Course c : course) {
@@ -76,7 +77,7 @@ public class TestServer implements ITestService{
     }
 	
 	public static void main(String[] args) {
-        TestServer testServer = new TestServer();
+        TestServer connRMI = new TestServer();
 
 	}
 }
