@@ -3,8 +3,6 @@ package com.desktop.JPanel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -12,8 +10,6 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
-
-import com.desktop.JFrame.AddExerciceFrame;
 import com.desktop.JFrame.MainFrame;
 import com.desktop.JFrame.ShowExerciceFrame;
 import com.duolingo.interfaces.ICategory;
@@ -31,14 +27,12 @@ import com.duolingo.model.Course;
 import com.duolingo.model.Language;
 import com.duolingo.model.LanguageCourse;
 import com.duolingo.model.Level;
-
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -72,6 +66,9 @@ public class AdministerCourses extends JPanel {
 		JLabel lblListLevels = new JLabel("Niveles de categor\u00EDa seleccionada");
 		JLabel lblListCourses = new JLabel("Cursos\r\n");
 		
+		JButton btnAddCategory = new JButton("A\u00F1adir categoria");
+		btnAddCategory.setEnabled(false);
+		
 		JButton btnAddLevel = new JButton("A\u00F1adir nivel");		
 		btnAddLevel.setEnabled(false);
 		btnAddLevel.addActionListener(new ActionListener() {
@@ -100,16 +97,15 @@ public class AdministerCourses extends JPanel {
 					int courseID = comboBoxDestinationLanguage.getSelectedIndex();
 					int position = listCategories.getSelectedIndex();
 					int categoryID = categoryManager.getCategoryID(languageID, courseID, position);
-					checkLevels(categoryID);
+					checkLevels(categoryID);					
 					
-					btnAddLevel.setEnabled(true);
-				}else {
+					dlmLevels.removeAllElements();
 					btnAddLevel.setEnabled(false);
 				}
 				
 				if (me.getClickCount() == 1) {
 					dlmCategories.removeAllElements();
-					
+					btnAddCategory.setEnabled(true);
 					int languageID = comboBoxOriginLanguage.getSelectedIndex();
 					int courseID = comboBoxDestinationLanguage.getSelectedIndex();
 					
@@ -117,8 +113,7 @@ public class AdministerCourses extends JPanel {
 				}
 			}
 		});
-		
-		JButton btnAddCategory = new JButton("A\u00F1adir categoria");
+			
 		btnAddCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -172,7 +167,7 @@ public class AdministerCourses extends JPanel {
 				String categoryName = listCategories.getSelectedValue().toString();
 				System.out.println(categoryName);
 				int categoryId = categoryManager.getCategoryByName(categoryName);
-				frame.addExcercicePanel(categoryId);			
+				frame.addExcercicePanel(categoryId, categoryName, listLevels.getSelectedValue().toString(), listCourses.getSelectedValue().toString());			
 			}
 		});
 		
@@ -295,6 +290,7 @@ public class AdministerCourses extends JPanel {
 		btnApplyFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				btnAddCategory.setEnabled(false);
 				short originLang = (short) comboBoxOriginLanguage.getSelectedIndex();
 				short destLang = (short) comboBoxDestinationLanguage.getSelectedIndex();
 												
@@ -377,7 +373,7 @@ public class AdministerCourses extends JPanel {
         	
         	// ## Falta x hacer FOREACH (Da error CastException o algo asi)
         	for (LanguageCourse lc : courses) {
-				dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(lc.getLanguage_ID()) + " // " + comboBoxDestinationLanguage.getItemAt(lc.getCourse_ID()) + "]");
+				dlmCourses.addElement("Curso - ["+comboBoxOriginLanguage.getItemAt(lc.getLanguage_ID()) + " // " + comboBoxDestinationLanguage.getItemAt(lc.getCourse_ID()) + "]");
 				// idRelationCourseLanguage = lc.getId();
 			}
     		// dlmCourses.addElement("CURSO - ["+comboBoxOriginLanguage.getItemAt(originLang) + " // " + comboBoxDestinationLanguage.getItemAt(destLang) + "]");

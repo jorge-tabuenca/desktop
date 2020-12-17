@@ -10,6 +10,9 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.desktop.JFrame.TypeExercise.TypeOpenTranslationFrame;
+import com.desktop.JFrame.TypeExercise.TypeTestFrame;
 import com.duolingo.interfaces.IExercice;
 import com.duolingo.interfaces.impl.ExerciceImpl;
 import com.duolingo.model.Exercice;
@@ -47,6 +50,12 @@ public class ShowExerciceFrame extends JFrame {
 			String typeExcercie = getTypeExcerciceName(exercice);
 			JButton exerciceButton = new JButton(exercice.getWord1() + " - Type:" + typeExcercie);
 			exerciceButton.setPreferredSize(new Dimension(660, 50));
+			exerciceButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					showPreviewExercice(exercice);
+				}
+			});
 			bottonPanel.add(exerciceButton);
 		}
 		
@@ -63,7 +72,7 @@ public class ShowExerciceFrame extends JFrame {
 	public String getTypeExcerciceName(Exercice exercice) {
 		String typeExcercie = "";
 		
-		switch (exercice.getCategory()) {
+		switch (exercice.getTypeExercice()) {
 			case 1:
 				typeExcercie = "Ex.Trad.Lliure";
 			break;	
@@ -72,5 +81,19 @@ public class ShowExerciceFrame extends JFrame {
 			break;			
 		}
 		return typeExcercie;
+	}
+	
+	public void showPreviewExercice(Exercice exercice) {
+		
+		switch (exercice.getTypeExercice()) {
+		case 1:
+			TypeOpenTranslationFrame openTranslationFrame = new TypeOpenTranslationFrame(exercice);
+			openTranslationFrame.setVisible(true);
+		break;	
+		case 2:
+			TypeTestFrame testFrame = new TypeTestFrame(exercice);
+			testFrame.setVisible(true);
+		break;			
+		}		
 	}
 }
