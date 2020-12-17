@@ -1,5 +1,6 @@
 package com.desktop.JPanel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -15,6 +16,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +27,7 @@ public class AdministerExercices extends JPanel{
     private JPanel panelLeft, panelRight, panelLabels, panelTree;
     private GridBagConstraints gbc = new GridBagConstraints();
     private Border eBorder = BorderFactory.createEtchedBorder();
+    private static ArrayList<String> arrayTypeExercisesUrl = new ArrayList<>();
     private static ArrayList<String> arrayTypeExercises = new ArrayList<>();
     int numberTypeExercises = 5;
     IExercice exerciceManager = new ExerciceImpl();
@@ -60,7 +65,7 @@ public class AdministerExercices extends JPanel{
         gbc.gridwidth = gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.weightx = gbc.weighty = 35;
+        gbc.weightx = gbc.weighty = 0;
         add(panelLeft, gbc);
 
     }
@@ -83,7 +88,7 @@ public class AdministerExercices extends JPanel{
 
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.gridwidth = 1;
+        gbc.gridwidth = 2;
         gbc.gridheight = 0;
         gbc.weightx = gbc.weighty = 70;
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -99,37 +104,58 @@ public class AdministerExercices extends JPanel{
         // hayan en la BBDD (MockUP = 7). El layout del JPanel panelRight és
         // de tipo GridLayout(C = 1, R = numberTypeExercice [7])
 
-        arrayTypeExercises.add("TRADUCCIO_REORDENA_PARAULES");
-        arrayTypeExercises.add("LISTENING_REORDENA");
-        arrayTypeExercises.add("LISTENING_OBERT");
-        arrayTypeExercises.add("APARELLA_PARAULES");
-        arrayTypeExercises.add("OMPLE_UNA_PARAULA");
+        arrayTypeExercisesUrl.add("https://i.imgur.com/pv6TvlL.png");
+        arrayTypeExercises.add("TRADUCCIO REORDENA PARAULES");
+        arrayTypeExercisesUrl.add("https://i.imgur.com/T44ESkE.png");
+        arrayTypeExercises.add("LISTENIG REORDENA");
+        arrayTypeExercisesUrl.add("https://i.imgur.com/9Ixq4HH.png");
+        arrayTypeExercises.add("LISTENING OBERT");
+        arrayTypeExercisesUrl.add("https://i.imgur.com/kWZUuPw.png");
+        arrayTypeExercises.add("APARELLA PARAULES");
+        arrayTypeExercisesUrl.add("https://i.imgur.com/JhGuMHe.png");
+        arrayTypeExercises.add("OMPLE UNA PARAULA");
         
-
-        for (int i = 0; i < numberTypeExercises; i++){
-            JButton btn = new JButton(arrayTypeExercises.get(i));
-            btn.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println(btn.getText());
-                }
-            });
-            panelRight.add(btn);
-        }
-        JButton testButton = new JButton("TIPUS TEST");
-        testButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new AddTestExerciceFrame(categoryID);               
-            }
-        });
-        panelRight.add(testButton);
-        
-        JButton openTranslationButton = new JButton("TRADUCCIO_OBERTA");
-        openTranslationButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new AddOpenTranslationFrame(categoryID);             
-            }
-        });
-        panelRight.add(openTranslationButton);
+        JButton testButton;
+		try {
+			
+			for (int i = 0; i < numberTypeExercises; i++){
+	            JButton btn = new JButton(arrayTypeExercises.get(i), new ImageIcon(new URL(arrayTypeExercisesUrl.get(i))));
+	            btn.setFont(new Font("Arial", Font.BOLD, 28));
+	            btn.setHorizontalTextPosition(SwingConstants.CENTER);
+	            btn.setForeground(Color.WHITE);
+	            btn.addActionListener(new ActionListener() {
+	                public void actionPerformed(ActionEvent e) {
+	                    System.out.println(btn.getText());
+	                }
+	            });
+	            panelRight.add(btn);
+	        }
+			
+			testButton = new JButton("TIPUS TEST", new ImageIcon(new URL("https://i.imgur.com/KUGPqA2.png")));
+			testButton.setFont(new Font("Arial", Font.BOLD, 28));
+			testButton.setHorizontalTextPosition(SwingConstants.CENTER);
+			testButton.setForeground(Color.WHITE);
+			testButton.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                new AddTestExerciceFrame(categoryID);               
+	            }
+	        });
+	        panelRight.add(testButton);
+	        
+	        JButton openTranslationButton = new JButton("TRADUCCIO OBERTA", new ImageIcon(new URL("https://i.imgur.com/MnvCeVl.png")));
+	        openTranslationButton.setFont(new Font("Arial", Font.BOLD, 28));
+	        openTranslationButton.setHorizontalTextPosition(SwingConstants.CENTER);
+	        openTranslationButton.setForeground(Color.WHITE);
+	        openTranslationButton.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                new AddOpenTranslationFrame(categoryID);             
+	            }
+	        });
+	        panelRight.add(openTranslationButton);
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     }
 
     private void addPanelLabels(String categoryName, String level, String course){
@@ -141,7 +167,7 @@ public class AdministerExercices extends JPanel{
         // Esta en MockUP, habría que cambiar este JPanel (panelLabels) a GroupLayout para mejorar
         // su calidad y presentación...
 
-        String [] arrayLabels = new String [] {"Curso: " + course, "Categoria: " + categoryName, "Level: " + level};
+        String [] arrayLabels = new String [] {course, "Categoria: " + categoryName, "Level: " + level};
         panelLabels = new JPanel(new GridLayout(arrayLabels.length, 1));
 
         for (int i = 0; i < arrayLabels.length; i++){
