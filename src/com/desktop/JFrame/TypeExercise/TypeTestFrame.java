@@ -12,12 +12,11 @@ import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.ButtonGroup;
+
 
 public class TypeTestFrame extends JFrame {
 
 	private JPanel contentPane;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JButton lastButton = new JButton();
 
 	public TypeTestFrame(Exercice exercice) {

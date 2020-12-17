@@ -109,10 +109,9 @@ public class MainFrame extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 	
-	public void addExcercicePanel(int categoryID) {
+	public void addExcercicePanel(int categoryID, String categoryName, String level, String course) {
 				
-		System.out.println("Hola " + categoryID);
-		AdministerExercices administerExercices = new AdministerExercices(categoryID);
+		AdministerExercices administerExercices = new AdministerExercices(categoryID, categoryName, level, course);
 		administerExercices.setSize(panel.getSize());
 			
 		panel.setSize(Toolkit.getDefaultToolkit().getScreenSize());
